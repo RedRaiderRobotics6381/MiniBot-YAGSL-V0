@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -56,6 +58,7 @@ public class Robot extends TimedRobot
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
     Autos.init();
+    DriverStation.silenceJoystickConnectionWarning(true);
   }
 
   /**
@@ -103,7 +106,7 @@ public class Robot extends TimedRobot
   public void autonomousInit()
   {
     //m_autonomousCommand = Autos.getAutonomousCommand();
-    m_robotContainer.setMotorBrake(true);
+    //m_robotContainer.setMotorBrake(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

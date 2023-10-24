@@ -79,16 +79,14 @@ public final class Autos
 
       // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want
       // to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
-      SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-                                                              swerve::getPose, // Pose2d supplier
+      SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(swerve::getPose, // Pose2d supplier
                                                               swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
                                                               new PIDConstants(Auton.yAutoPID.p, Auton.yAutoPID.i, Auton.yAutoPID.d), // PID constants to correct for translation error (used to create the X and Y PID controllers)
                                                               new PIDConstants(Auton.angleAutoPID.p, Auton.angleAutoPID.i, Auton.angleAutoPID.d), // PID constants to correct for rotation error (used to create the rotation controller)
                                                               swerve::setChassisSpeeds, // Module states consumer used to output to the drive subsystem
                                                               eventMap,
                                                               false, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                                                              swerve // The drive subsystem. Used to properly set the requirements of path following commands
-                                                            );
+                                                              swerve); // The drive subsystem. Used to properly set the requirements of path following commands
       return Commands.sequence(autoBuilder.fullAuto(example1));
   }
 
@@ -115,15 +113,17 @@ public final class Autos
         return null;
       }
     }
-    PathPlannerTrajectory path = PathPlanner.generatePath(new PathConstraints(4, 3), false,
+    PathPlannerTrajectory path = PathPlanner.generatePath(new PathConstraints(4, 3), 
+                                                          false,
                                                           PathPoint.fromCurrentHolonomicState(swerve.getPose(),
-                                                                                              swerve.getRobotVelocity()),
+                                                          swerve.getRobotVelocity()),
                                                           new PathPoint(aprilTagField.getTagPose(id).get()
-                                                                                     .getTranslation()
-                                                                                     .toTranslation2d().plus(offset),
-                                                                        rotation, holonomicRotation));
+                                                          .getTranslation()
+                                                          .toTranslation2d().plus(offset),
+                                                          rotation, holonomicRotation));
     return Commands.sequence(new FollowTrajectory(swerve, path, false));
   }
+  
   public static String getAutonomousCommand() {
     return autoChooser.getSelected();
   }
