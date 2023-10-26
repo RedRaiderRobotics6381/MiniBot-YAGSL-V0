@@ -58,7 +58,7 @@ public class Robot extends TimedRobot
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
     Autos.init();
-    DriverStation.silenceJoystickConnectionWarning(true);
+    DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
   }
 
   /**
