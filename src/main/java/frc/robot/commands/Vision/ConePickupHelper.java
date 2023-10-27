@@ -18,15 +18,19 @@ import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import swervelib.SwerveDrive;
 
 public class ConePickupHelper extends CommandBase {
-  private ArmRotateSubsystem armRotateSubsystem;
-  private ArmIntakeSubsystem armIntakeSubsystem;
+  private final ArmRotateSubsystem armRotateSubsystem;
+  private final ArmIntakeSubsystem armIntakeSubsystem;
   //public final static ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
   //public final static ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
   /** Creates a new ConePickupHelper. */
   private final swervelib.SwerveDrive swerveDrive;
   private final PIDController   controller;
 
-  public ConePickupHelper() {
+  public ConePickupHelper(ArmIntakeSubsystem armIntakeSubsystem, ArmRotateSubsystem armRotateSubsystem) {
+    this.armRotateSubsystem = armRotateSubsystem;
+    addRequirements(armRotateSubsystem);
+    this.armIntakeSubsystem = armIntakeSubsystem;
+    addRequirements(armIntakeSubsystem);
     swerveDrive = new SwerveDrive(null, null);
     controller = new PIDController(1.0, 0.0, 0.0);
   }

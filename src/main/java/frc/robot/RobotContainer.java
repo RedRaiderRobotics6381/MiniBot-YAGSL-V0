@@ -128,8 +128,8 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(new CubePickupHelper());
-    new JoystickButton(driverXbox, 6).onTrue(new ConePickupHelper());
+    new JoystickButton(driverXbox, 5).onTrue(new CubePickupHelper(armIntakeSubsystem,armRotateSubsystem));
+    new JoystickButton(driverXbox, 6).onTrue(new ConePickupHelper(armIntakeSubsystem,armRotateSubsystem));
     
 
 
