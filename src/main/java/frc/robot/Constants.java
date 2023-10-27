@@ -50,58 +50,56 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND = 0.01;
   }
   
-//   public static final class ArmConstants {
-//        // public static final int kLeftSliderMotor = 13;
-//        //public static final int kRightSliderMotor = 14;
-//        public static final int kArmRotateMotor = 13;
+  public static final class ArmConstants {
+       public static final int kArmRotateMotor = 13;
         
-//        //public static final int kManipulatorWristMotor = 17;
-//        public static final int kManipulatorIntakeMotorL = 14;
-//        public static final int kManipulatorIntakeMotorR = 15;
+       //public static final int kManipulatorWristMotor = 17;
+       public static final int kManipulatorIntakeMotorL = 14;
+       public static final int kManipulatorIntakeMotorR = 15;
 
-//        // uncertain
-//        public static final int gArmSliderBottom = 1;
-//        public static final int gArmSliderTop = 41;
-//        public static final int gArmSliderLow = 22;
-//        public static final int gArmSliderHumanPlayer = 41;
+       // uncertain
+       public static final int gArmSliderBottom = 1;
+       public static final int gArmSliderTop = 41;
+       public static final int gArmSliderLow = 22;
+       public static final int gArmSliderHumanPlayer = 41;
 
-//        public static final double gArmOffset = 1;
-//        public static final double gRotateoffset = 0.25;
+       public static final double gArmOffset = 1;
+       public static final double gRotateoffset = 0.25;
 
-//        public static final double gSliderSpeed = -0.6;
-//        public static final double gSliderDown = -0.4;
-//        public static final double gRotateSpeed = 0.85;
-//        public static final double gOutputSpeed = 1.00;
-//        public static final double gIntakeSpeed = 0.50;
+       public static final double gSliderSpeed = -0.6;
+       public static final double gSliderDown = -0.4;
+       public static final double gRotateSpeed = 0.85;
+       public static final double gOutputSpeed = 1.00;
+       public static final double gIntakeSpeed = 0.50;
 
-//        public static final double rotateoffset = 2.5;
+       public static final double rotateoffset = 2.5;
 
-//        // manipulator rotations
-//        // human player
-//        public static final double posDoubleHuman = 100;
-//        // placing
-//        public static final double posPlace = 117;
-//        // up
-//        public static final double posDrive = 245;
-//        // intake
-//        public static final double posIntake = 132.5;
-//        // Single human player station
-//        public static final double posSingularHuman = 125; //Match 24, was at 130
-//        //Hybrid Node on front
-//        public static final double posHybrid = 70;
+       // manipulator rotations
+       // human player
+       public static final double posDoubleHuman = 100;
+       // placing
+       public static final double posPlace = 117;
+       // up
+       public static final double posDrive = 245;
+       // intake
+       public static final double posIntake = 132.5;
+       // Single human player station
+       public static final double posSingularHuman = 125; //Match 24, was at 130
+       //Hybrid Node on front
+       public static final double posHybrid = 70;
        
-//        public static final double posDoubleHumanGravity = 0.03;
-//        public static final double posPlaceGravity = 0.03;
-//        public static final double posDriveGravity = 0.01;
-//        public static final double posIntakeGravity = 0.03;
-//        public static final double posSingularHumanGravity = 0.02;
-//        public static final double posHybridGravity = 0.04;
-//        public static final double restriction1 = 70;
-//        public static final double restriction2 = 291;
-//        public static final double rotateSpeed = 1;
+       public static final double posDoubleHumanGravity = 0.03;
+       public static final double posPlaceGravity = 0.03;
+       public static final double posDriveGravity = 0.01;
+       public static final double posIntakeGravity = 0.03;
+       public static final double posSingularHumanGravity = 0.02;
+       public static final double posHybridGravity = 0.04;
+       public static final double restriction1 = 70;
+       public static final double restriction2 = 291;
+       public static final double rotateSpeed = 1;
 
-//        public static boolean manipulatorOn = false;
-//        public static boolean manipulatorManual = false;
-//        public static int rightYPort = 5;
-// }
+       public static boolean manipulatorOn = false;
+       public static boolean manipulatorManual = false;
+       public static int rightYPort = 5;
+}
 }

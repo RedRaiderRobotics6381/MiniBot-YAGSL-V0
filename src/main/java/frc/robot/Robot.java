@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.swervedrive.auto.Autos;
+import frc.robot.subsystems.LimelightHelpers;
 
 import java.io.File;
 import java.io.IOException;
@@ -137,6 +138,7 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
+    LimelightHelpers.setLEDMode_ForceOn("");
   }
 
   /**
@@ -145,6 +147,7 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
+
   }
 
   @Override
