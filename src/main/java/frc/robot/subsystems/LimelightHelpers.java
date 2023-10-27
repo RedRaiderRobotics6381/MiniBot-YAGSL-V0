@@ -777,4 +777,8 @@ public class LimelightHelpers {
 
         return results;
     }
+
+    public static String getCurrentPipelineIndex(String name, String string) {
+        return null;
+    }
 }
