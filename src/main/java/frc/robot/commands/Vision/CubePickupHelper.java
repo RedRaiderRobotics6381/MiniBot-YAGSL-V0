@@ -37,7 +37,7 @@ public class CubePickupHelper extends CommandBase {
     // Turn on Limelight LED and set camera mode
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex(getName(), 1); // Set the Limelight to the cone pipeline
+    LimelightHelpers.setPipelineIndex("", 1); // Set the Limelight to the cone pipeline
     controller.setTolerance(1);
     controller.setSetpoint(0.0);
   }
@@ -51,19 +51,19 @@ public class CubePickupHelper extends CommandBase {
     double translationValX = MathUtil.clamp(controller.calculate(TX, 0.25), 0, 2); // Clamp the translation values
     double translationValY = MathUtil.clamp(controller.calculate(TY, -.1), -2, 2); // Clamp the translation values
     
-    SmartDashboard.putNumber("TX", LimelightHelpers.getTX(getName()));
-    SmartDashboard.putNumber("TY", LimelightHelpers.getTY(getName()));
-    SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(getName()));
+    SmartDashboard.putNumber("TX", LimelightHelpers.getTX(""));
+    SmartDashboard.putNumber("TY", LimelightHelpers.getTY(""));
+    SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
 
     // Set the speed and angle of each wheel on the swerve drive
-    swerveDrive.drive(new Translation2d(translationValX,translationValY), 0.0, true, false);
+    //swerveDrive.drive(new Translation2d(translationValX,translationValY), 0.0, true, false);
   }
 
   @Override
   public void end(boolean interrupted) {
     // Turn off Limelight LED and set camera mode
-    LimelightHelpers.setLEDMode_ForceOff(getName());
-    LimelightHelpers.setCameraMode_Processor(getName());
-    LimelightHelpers.setCameraMode_Driver(getName());
+    LimelightHelpers.setLEDMode_ForceOff("");
+    LimelightHelpers.setCameraMode_Processor("");
+    LimelightHelpers.setCameraMode_Driver("");
   }
 }
