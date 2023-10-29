@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
 import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
-import frc.robot.commands.Vision.CubePickupHelper;
+//import frc.robot.commands.Vision.CubePickupHelper;
+import frc.robot.commands.Vision.DriveToCube;
 // import frc.robot.commands.Vision.ConePickupHelper;
 //import frc.robot.commands.Vision.CubePickupHelper;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
@@ -46,6 +47,7 @@ import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 // import swervelib.SwerveDrive;
+//import swervelib.SwerveDrive;
 
 import java.io.File;
 // import java.util.function.DoubleSupplier;
@@ -137,7 +139,7 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(new CubePickupHelper(null)); 
+    new JoystickButton(driverXbox, 5).onTrue(new DriveToCube(drivebase)); 
     // double TX;
     // double TY;
     // DoubleSupplier translationValX;
