@@ -6,12 +6,12 @@ import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
 public class ArmRotateToIntakePos extends CommandBase {
 
-    private final ArmRotateSubsystem rotateSubsystem;
+    private final ArmRotateSubsystem armRotateSubsystem;
     double P;
 
-    public ArmRotateToIntakePos(ArmRotateSubsystem rotateSubsystem) {
-        this.rotateSubsystem = rotateSubsystem;
-        addRequirements(rotateSubsystem);
+    public ArmRotateToIntakePos(ArmRotateSubsystem armRotateSubsystem) {
+        this.armRotateSubsystem = armRotateSubsystem;
+        addRequirements(armRotateSubsystem);
     }
 
     @Override
@@ -22,26 +22,26 @@ public class ArmRotateToIntakePos extends CommandBase {
 
     @Override
     public void execute() {
-        P = ((Math.abs(rotateSubsystem.armRotateEncoder.getPosition() - ArmConstants.posIntake)+30)/300);
-        if(rotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake + ArmConstants.rotateoffset){
-            rotateSubsystem.armRotateMotor.set(-ArmConstants.rotateSpeed * P*.75);
+        P = ((Math.abs(armRotateSubsystem.armRotateEncoder.getPosition() - ArmConstants.posIntake)+30)/300);
+        if(armRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake + ArmConstants.rotateoffset){
+            armRotateSubsystem.armRotateMotor.set(-ArmConstants.rotateSpeed * P*.75);
             // System.out.println("up");
            }
-           if(rotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake - ArmConstants.rotateoffset){
-            rotateSubsystem.armRotateMotor.set(ArmConstants.rotateSpeed * P*.75);
+           if(armRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake - ArmConstants.rotateoffset){
+            armRotateSubsystem.armRotateMotor.set(ArmConstants.rotateSpeed * P*.75);
             // System.out.println("down");
            }
     }
 
     @Override
     public void end(boolean interrupted) {
-        rotateSubsystem.armRotateMotor.set(ArmConstants.posIntakeGravity);
+        armRotateSubsystem.armRotateMotor.set(ArmConstants.posIntakeGravity);
         Constants.ArmConstants.manipulatorOn = false;
     }
 
     @Override
     public boolean isFinished() {
-        if(rotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake - ArmConstants.rotateoffset && rotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake + ArmConstants.rotateoffset){
+        if(armRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake - ArmConstants.rotateoffset && armRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake + ArmConstants.rotateoffset){
             return true;
         }else{
             return false;

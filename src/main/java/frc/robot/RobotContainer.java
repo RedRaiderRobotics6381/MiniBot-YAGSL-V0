@@ -5,9 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+// import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,8 +23,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
 import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
-import frc.robot.commands.Vision.ConePickupHelper;
 import frc.robot.commands.Vision.CubePickupHelper;
+// import frc.robot.commands.Vision.ConePickupHelper;
+//import frc.robot.commands.Vision.CubePickupHelper;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeOutCmd;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
@@ -34,13 +38,17 @@ import frc.robot.commands.swervedrive.auto.Autos;
 // import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 // import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
+// import frc.robot.subsystems.LimelightHelpers;
 // import frc.robot.commands.DefaultCommands.DefaultLimelightObjectDectionCommand;
 // import frc.robot.commands.DefaultCommands.DefaultLimelightScoringDectionCommand;
 // import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+// import swervelib.SwerveDrive;
+
 import java.io.File;
+// import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -61,8 +69,9 @@ public class RobotContainer
   XboxController driverXbox = new XboxController(0);
   // public final static XboxController secondaryJoystick = new XboxController(1);
 
-  public final static ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
-  public final static ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
+  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
+  private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
+  // private final PIDController controller;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -128,8 +137,42 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(new CubePickupHelper(armIntakeSubsystem,armRotateSubsystem));
-    new JoystickButton(driverXbox, 6).onTrue(new ConePickupHelper(armIntakeSubsystem,armRotateSubsystem));
+    new JoystickButton(driverXbox, 5).onTrue(new CubePickupHelper(null)); 
+    // double TX;
+    // double TY;
+    // DoubleSupplier translationValX;
+    // DoubleSupplier translationValY;
+    // new JoystickButton(driverXbox, 5).onTrue(Commands.sequence(
+            // Turn on Limelight LED and set camera mode
+      //LimelightHelpers.setLEDMode_ForceOn("");
+      //LimelightHelpers.setCameraMode_Processor("");
+      //LimelightHelpers.setPipelineIndex("", 1); // Set the Limelight to the cone pipeline
+      // new ArmRotateToIntakePos(armRotateSubsystem),
+      // new ArmIntakeInCmd(armIntakeSubsystem),
+      // // Get the TX and TY values from the Limelight
+      // TX = LimelightHelpers.getTX("") + .5, // Add .5 to TX to center the robot on the target
+      // TY = LimelightHelpers.getTY("") - .1, // Subtract .1 from TY to center the robot on the target
+      // controller.setTolerance(1),
+      // controller.setSetpoint(0.0),
+      //translationValX = (MathUtil.clamp(controller.calculate(LimelightHelpers.getTX("") + .5, 0.25), 0, 2)), // Clamp the translation values
+      //translationValY = (MathUtil.clamp(controller.calculate(LimelightHelpers.getTY("") - .1, -.1), -2, 2)), // Clamp the translation values
+      
+      //SmartDashboard.putNumber("Cone TX", LimelightHelpers.getTX(""));
+      //SmartDashboard.putNumber("TY", LimelightHelpers.getTY(""));
+      //SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
+      
+      // Set the speed and angle of each wheel on the swerve drive
+      //new TeleopDrive(drivebase, null, null, null, null, false, false)
+    //   drivebase.drive(new Translation2d(
+    //                                     (MathUtil.clamp(controller.calculate(LimelightHelpers.getTX("") + .5, 0.25), 0, 2)),
+    //                                     (MathUtil.clamp(controller.calculate(LimelightHelpers.getTY("") - .1, -.1), -2, 2))),
+    //                                     0,
+    //                                     false,
+    //                                     false),
+    //   new ArmRotateToDrivePosCmd(armRotateSubsystem)
+    // ));
+    
+    //new JoystickButton(driverXbox, 6).onTrue(new CubePickupHelper(armIntakeSubsystem,armRotateSubsystem));
     
 
 

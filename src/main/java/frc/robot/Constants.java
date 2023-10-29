@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -101,5 +102,13 @@ public final class Constants
        public static boolean manipulatorOn = false;
        public static boolean manipulatorManual = false;
        public static int rightYPort = 5;
-}
+  }
+  
+  public static final class SensorConstants {
+    public static PIDController PIDspeed = new PIDController(0.20, 0, 0);
+    public static PIDController PIDside = new PIDController(0.06, 0, 0);
+    public static PIDController PIDturn = new PIDController(0.005, 0, 0);
+    public static PIDController PIDcharging = new PIDController(0.05, 0, 0);
+  }
+
 }
