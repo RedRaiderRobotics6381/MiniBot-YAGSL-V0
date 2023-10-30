@@ -38,7 +38,7 @@ public class DriveToCube extends CommandBase
   {
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("", 1); // Set the Limelight to the cone pipeline
+    LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
 
   }
 
@@ -52,7 +52,7 @@ public class DriveToCube extends CommandBase
     Double TX = LimelightHelpers.getTX("") + .5; // Add .5 to TX to center the robot on the target
     Double TY = LimelightHelpers.getTY("") - .1; // Subtract .1 from TY to center the robot on the target
     
-    Double translationValX = MathUtil.clamp(controller.calculate(TX, 0.25), 0, 2); // Clamp the translation values
+    Double translationValX = MathUtil.clamp(controller.calculate(TX, 0), 30, 30); // Clamp the translation values
     Double translationValY = MathUtil.clamp(controller.calculate(TY, -.1), -2, 2); // Clamp the translation values
     
     SmartDashboard.putNumber("TX", LimelightHelpers.getTX(""));
@@ -64,7 +64,7 @@ public class DriveToCube extends CommandBase
 
     //double translationVal = MathUtil.clamp(controller.calculate(swerveSubsystem.getPitch().getDegrees(), 0.0), -0.5,
     //                                       0.5);
-    swerveSubsystem.drive(new Translation2d(translationValX, translationValY), 0.0, true, false);
+    swerveSubsystem.drive(new Translation2d(0, 0), translationValX, true, false);
   }
 
   /**
