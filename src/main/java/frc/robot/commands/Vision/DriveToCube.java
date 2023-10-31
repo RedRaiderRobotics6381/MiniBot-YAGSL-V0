@@ -54,10 +54,12 @@ public class DriveToCube extends CommandBase
       if (LimelightHelpers.getTargetPose_CameraSpace("").length != 0) {
         Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
         Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
+        Double CX = LimelightHelpers.getCameraPose_TargetSpace("")[0];
+        Double CY = LimelightHelpers.getCameraPose_TargetSpace("")[1];
         SmartDashboard.putNumber("Limelight TX", TX);
         SmartDashboard.putNumber("Limelight TY", TY);
-        Double translationValX = MathUtil.clamp(controller.calculate(TX, .5), -.25, .25); // Clamp the translation values 
-        Double translationValY = MathUtil.clamp(controller.calculate(TY, .5), -.25, .25); // Clamp the translation values 
+        Double translationValX = MathUtil.clamp(controller.calculate(CX, TX), -.25, .25); // Clamp the translation values 
+        Double translationValY = MathUtil.clamp(controller.calculate(CY, TY), -.25, .25); // Clamp the translation values 
         drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
       }
     }
@@ -94,9 +96,9 @@ public class DriveToCube extends CommandBase
   {
     drivebase.lock();
     // Turn off Limelight LED and set camera mode
-    LimelightHelpers.setLEDMode_ForceOff("");
-    LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setCameraMode_Driver("");
+    //LimelightHelpers.setLEDMode_ForceOff("");
+    //LimelightHelpers.setCameraMode_Processor("");
+    //LimelightHelpers.setCameraMode_Driver("");
     
   }
 }
