@@ -139,7 +139,7 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 5).whileTrue(new DriveToCube(drivebase)); 
+    new JoystickButton(driverXbox, 5).onTrue(new DriveToCube(drivebase)); 
     // double TX;
     // double TY;
     // DoubleSupplier translationValX;
