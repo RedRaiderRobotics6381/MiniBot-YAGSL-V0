@@ -16,18 +16,18 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class DriveToCube extends CommandBase
 {
 
-  private final SwerveSubsystem swerveSubsystem;
+  private final SwerveSubsystem drivebase;
   private final PIDController   controller;
 
-  public DriveToCube(SwerveSubsystem swerveSubsystem)
+  public DriveToCube(SwerveSubsystem drivebase)
   {
-    this.swerveSubsystem = swerveSubsystem;
+    this.drivebase = drivebase;
     controller = new PIDController(1.0, 0.0, 0.0);
     controller.setTolerance(1);
     controller.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
-    addRequirements(this.swerveSubsystem);
+    addRequirements(this.drivebase);
   }
 
   /**
@@ -39,9 +39,9 @@ public class DriveToCube extends CommandBase
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
     LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
-    SmartDashboard.putNumber("TX", LimelightHelpers.getTargetPose_CameraSpace("")[0]);
-    SmartDashboard.putNumber("TY", LimelightHelpers.getTargetPose_CameraSpace("")[1]);
-    SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
+    //SmartDashboard.putNumber("TX", LimelightHelpers.getTargetPose_CameraSpace("")[0]);
+    //SmartDashboard.putNumber("TY", LimelightHelpers.getTargetPose_CameraSpace("")[1]);
+    //SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
   }
 
   /**
@@ -55,7 +55,7 @@ public class DriveToCube extends CommandBase
       Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
       Double translationValX = MathUtil.clamp(controller.calculate(TX, 1), 2, 2); // Clamp the translation values 
       Double translationValY = MathUtil.clamp(controller.calculate(TY, 1), 2, 2); // Clamp the translation values 
-      swerveSubsystem.drive(new Translation2d(translationValX, translationValY), 0, true, false);
+      drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
     }
   }
 
@@ -88,7 +88,7 @@ public class DriveToCube extends CommandBase
   @Override
   public void end(boolean interrupted)
   {
-    swerveSubsystem.lock();
+    drivebase.lock();
     // Turn off Limelight LED and set camera mode
     LimelightHelpers.setLEDMode_ForceOff("");
     LimelightHelpers.setCameraMode_Processor("");
