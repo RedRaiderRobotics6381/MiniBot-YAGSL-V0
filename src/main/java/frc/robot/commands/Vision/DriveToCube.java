@@ -3,6 +3,7 @@ package frc.robot.commands.Vision;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimelightHelpers;
@@ -40,8 +41,6 @@ public class DriveToCube extends CommandBase
     LimelightHelpers.setCameraMode_Processor("");
     LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
     //SmartDashboard.putNumber("TX", LimelightHelpers.getTargetPose_CameraSpace("")[0]);
-    //SmartDashboard.putNumber("TY", LimelightHelpers.getTargetPose_CameraSpace("")[1]);
-    //SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
   }
 
   /**
@@ -51,11 +50,16 @@ public class DriveToCube extends CommandBase
   @Override
   public void execute(){
     if (LimelightHelpers.getNeuralClassID("") == 0) {
-      Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
-      Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
-      Double translationValX = MathUtil.clamp(controller.calculate(TX, 1), 2, 2); // Clamp the translation values 
-      Double translationValY = MathUtil.clamp(controller.calculate(TY, 1), 2, 2); // Clamp the translation values 
-      drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
+      SmartDashboard.putNumber("Limelight ID", LimelightHelpers.getNeuralClassID(""));
+      if (LimelightHelpers.getTargetPose_CameraSpace("").length != 0) {
+        Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
+        Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
+        SmartDashboard.putNumber("Limelight TX", TX);
+        SmartDashboard.putNumber("Limelight TY", TY);
+        Double translationValX = MathUtil.clamp(controller.calculate(TX, 1), 2, 2); // Clamp the translation values 
+        Double translationValY = MathUtil.clamp(controller.calculate(TY, 1), 2, 2); // Clamp the translation values 
+        drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
+      }
     }
   }
 
