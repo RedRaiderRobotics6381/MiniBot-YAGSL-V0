@@ -23,8 +23,8 @@ public class DriveToCube extends CommandBase
   public DriveToCube(SwerveSubsystem drivebase)
   {
     this.drivebase = drivebase;
-    controller = new PIDController(1.0, 0.0, 0.0);
-    controller.setTolerance(1);
+    controller = new PIDController(.50, 0.0, 0.0);
+    controller.setTolerance(.1);
     controller.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
@@ -56,8 +56,8 @@ public class DriveToCube extends CommandBase
         Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
         SmartDashboard.putNumber("Limelight TX", TX);
         SmartDashboard.putNumber("Limelight TY", TY);
-        Double translationValX = MathUtil.clamp(controller.calculate(TX, 1), 2, 2); // Clamp the translation values 
-        Double translationValY = MathUtil.clamp(controller.calculate(TY, 1), 2, 2); // Clamp the translation values 
+        Double translationValX = MathUtil.clamp(controller.calculate(TX, .5), -.25, .25); // Clamp the translation values 
+        Double translationValY = MathUtil.clamp(controller.calculate(TY, .5), -.25, .25); // Clamp the translation values 
         drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
       }
     }
