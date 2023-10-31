@@ -39,7 +39,9 @@ public class DriveToCube extends CommandBase
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
     LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
-
+    SmartDashboard.putNumber("TX", LimelightHelpers.getTargetPose_CameraSpace("")[0]);
+    SmartDashboard.putNumber("TY", LimelightHelpers.getTargetPose_CameraSpace("")[1]);
+    SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
   }
 
   /**
@@ -47,24 +49,14 @@ public class DriveToCube extends CommandBase
    * until {@link #isFinished()}) returns true.)
    */
   @Override
-  public void execute()
-  {    // Get the TX and TY values from the Limelight
-    Double TX = LimelightHelpers.getTX("") + .5; // Add .5 to TX to center the robot on the target
-    Double TY = LimelightHelpers.getTY("") - .1; // Subtract .1 from TY to center the robot on the target
-    
-    Double translationValX = MathUtil.clamp(controller.calculate(TX, 0), 30, 30); // Clamp the translation values
-    Double translationValY = MathUtil.clamp(controller.calculate(TY, -.1), -2, 2); // Clamp the translation values
-    
-    SmartDashboard.putNumber("TX", LimelightHelpers.getTX(""));
-    SmartDashboard.putNumber("TY", LimelightHelpers.getTY(""));
-    SmartDashboard.putNumber("ID", LimelightHelpers.getNeuralClassID(""));
-
-
-    SmartDashboard.putBoolean("At Tolerance", controller.atSetpoint());
-
-    //double translationVal = MathUtil.clamp(controller.calculate(swerveSubsystem.getPitch().getDegrees(), 0.0), -0.5,
-    //                                       0.5);
-    swerveSubsystem.drive(new Translation2d(0, 0), translationValX, true, false);
+  public void execute(){
+    if (LimelightHelpers.getNeuralClassID("") == 0) {
+      Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
+      Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
+      Double translationValX = MathUtil.clamp(controller.calculate(TX, 1), 2, 2); // Clamp the translation values 
+      Double translationValY = MathUtil.clamp(controller.calculate(TY, 1), 2, 2); // Clamp the translation values 
+      swerveSubsystem.drive(new Translation2d(translationValX, translationValY), 0, true, false);
+    }
   }
 
   /**
