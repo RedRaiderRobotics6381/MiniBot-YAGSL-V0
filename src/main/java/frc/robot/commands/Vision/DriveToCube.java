@@ -37,9 +37,9 @@ public class DriveToCube extends CommandBase
   @Override
   public void initialize()
   {
-    LimelightHelpers.setLEDMode_ForceOn("");
-    LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
+    //LimelightHelpers.setLEDMode_ForceOn("");
+    //LimelightHelpers.setCameraMode_Processor("");
+    //LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
     //SmartDashboard.putNumber("TX", LimelightHelpers.getTargetPose_CameraSpace("")[0]);
   }
 
@@ -58,12 +58,12 @@ public class DriveToCube extends CommandBase
         Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
         //Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
         //Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
-        Double CX = LimelightHelpers.getCameraPose3d_RobotSpace("").getX();
-        Double CY = LimelightHelpers.getCameraPose3d_RobotSpace("").getY();
+        //Double CX = LimelightHelpers.getCameraPose3d_RobotSpace("").getX();
+        //Double CY = LimelightHelpers.getCameraPose3d_RobotSpace("").getY();
         //Double CX = LimelightHelpers.getCameraPose_TargetSpace("")[0];
         //Double CY = LimelightHelpers.getCameraPose_TargetSpace("")[1];
-        Double translationValX = MathUtil.clamp(controller.calculate(CX, TX), -.25, .25); // Clamp the translation values 
-        Double translationValY = MathUtil.clamp(controller.calculate(CY, TY), -.25, .25); // Clamp the translation values 
+        Double translationValX = controller.calculate(TX, .25); // Clamp the translation values 
+        Double translationValY = controller.calculate(TY, .25); // Clamp the translation values 
         SmartDashboard.putNumber("Limelight TX", translationValX);
         SmartDashboard.putNumber("Limelight TY", translationValY);
 

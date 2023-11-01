@@ -18,6 +18,9 @@ import frc.robot.subsystems.LimelightHelpers;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.plaf.TreeUI;
+
 import swervelib.parser.SwerveParser;
 
 /**
@@ -61,6 +64,9 @@ public class Robot extends TimedRobot
     disabledTimer = new Timer();
     Autos.init();
     DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
+    LimelightHelpers.setLEDMode_ForceOn("");
+    LimelightHelpers.setCameraMode_Processor("");
+    LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
   }
 
   /**
@@ -139,9 +145,9 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
-    LimelightHelpers.setLEDMode_ForceOn("");
-    LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("", 0);
+    //LimelightHelpers.setLEDMode_ForceOn("");
+    //LimelightHelpers.setCameraMode_Processor("");
+    //LimelightHelpers.setPipelineIndex("", 0);
   }
 
   /**
@@ -152,8 +158,11 @@ public class Robot extends TimedRobot
   {
     //SmartDashboard.putNumber("Limelight X", LimelightHelpers.getTX(""));
     //SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
-    SmartDashboard.putNumber("Limelight X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
-    SmartDashboard.putNumber("Limelight Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
+    Boolean HasTarget = LimelightHelpers.getTV("");
+    if (HasTarget == true){
+      SmartDashboard.putNumber("Limelight X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
+      SmartDashboard.putNumber("Limelight Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
+    }
     //Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
     //Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
   }
