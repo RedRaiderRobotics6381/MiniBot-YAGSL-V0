@@ -150,8 +150,12 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
-    SmartDashboard.putNumber("Limelight X", LimelightHelpers.getTX(""));
-    SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
+    //SmartDashboard.putNumber("Limelight X", LimelightHelpers.getTX(""));
+    //SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
+    SmartDashboard.putNumber("Limelight X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
+    SmartDashboard.putNumber("Limelight Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
+    //Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
+    //Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
   }
 
   @Override
