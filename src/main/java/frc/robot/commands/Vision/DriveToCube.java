@@ -54,10 +54,14 @@ public class DriveToCube extends CommandBase
   if (LimelightHelpers.getNeuralClassID("") == 0) {
       SmartDashboard.putNumber("Limelight ID", LimelightHelpers.getNeuralClassID(""));
       if (LimelightHelpers.getTargetPose_CameraSpace("").length != 0) {
-        Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
-        Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
-        Double CX = LimelightHelpers.getCameraPose_TargetSpace("")[0];
-        Double CY = LimelightHelpers.getCameraPose_TargetSpace("")[1];
+        Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
+        Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
+        //Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
+        //Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
+        Double CX = LimelightHelpers.getCameraPose3d_RobotSpace("").getX();
+        Double CY = LimelightHelpers.getCameraPose3d_RobotSpace("").getY();
+        //Double CX = LimelightHelpers.getCameraPose_TargetSpace("")[0];
+        //Double CY = LimelightHelpers.getCameraPose_TargetSpace("")[1];
         Double translationValX = MathUtil.clamp(controller.calculate(CX, TX), -.25, .25); // Clamp the translation values 
         Double translationValY = MathUtil.clamp(controller.calculate(CY, TY), -.25, .25); // Clamp the translation values 
         SmartDashboard.putNumber("Limelight TX", translationValX);
