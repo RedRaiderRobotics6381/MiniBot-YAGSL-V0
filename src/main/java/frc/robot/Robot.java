@@ -160,8 +160,10 @@ public class Robot extends TimedRobot
     //SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
     Boolean HasTarget = LimelightHelpers.getTV("");
     if (HasTarget == true){
-      SmartDashboard.putNumber("Limelight X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
-      SmartDashboard.putNumber("Limelight Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
+      SmartDashboard.putNumber("Limelight Target X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
+      SmartDashboard.putNumber("Limelight Target Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
+      SmartDashboard.putNumber("Limelight TX",LimelightHelpers.getTX(""));
+      SmartDashboard.putNumber("Limelight TY",LimelightHelpers.getTX(""));
     }
     //Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
     //Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
