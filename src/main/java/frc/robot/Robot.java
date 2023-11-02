@@ -66,7 +66,6 @@ public class Robot extends TimedRobot
     DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
   }
 
   /**
@@ -145,9 +144,9 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
-    //LimelightHelpers.setLEDMode_ForceOn("");
-    //LimelightHelpers.setCameraMode_Processor("");
-    //LimelightHelpers.setPipelineIndex("", 0);
+    LimelightHelpers.setLEDMode_ForceOn("");
+    LimelightHelpers.setCameraMode_Processor("");
+    LimelightHelpers.setPipelineIndex("", 0);
   }
 
   /**
@@ -158,13 +157,13 @@ public class Robot extends TimedRobot
   {
     //SmartDashboard.putNumber("Limelight X", LimelightHelpers.getTX(""));
     //SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
-    Boolean HasTarget = LimelightHelpers.getTV("");
-    if (HasTarget == true){
-      SmartDashboard.putNumber("Limelight Target X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
-      SmartDashboard.putNumber("Limelight Target Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
-      SmartDashboard.putNumber("Limelight TX",LimelightHelpers.getTX(""));
-      SmartDashboard.putNumber("Limelight TY",LimelightHelpers.getTX(""));
-    }
+     Boolean HasTarget = LimelightHelpers.getTV("");
+     if (HasTarget == true){
+       //SmartDashboard.putNumber("Limelight Target X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
+       //SmartDashboard.putNumber("Limelight Target Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
+       SmartDashboard.putNumber("Limelight TX",LimelightHelpers.getTX(""));
+       SmartDashboard.putNumber("Limelight TY",LimelightHelpers.getTY(""));
+     }
     //Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
     //Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
   }
