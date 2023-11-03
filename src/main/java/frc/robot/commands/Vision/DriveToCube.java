@@ -23,7 +23,7 @@ public class DriveToCube extends CommandBase
   public DriveToCube(SwerveSubsystem drivebase)
   {
     this.drivebase = drivebase;
-    controller = new PIDController(.25, 0.0, 0.0);
+    controller = new PIDController(.50, 0.0, 0.0);
     controller.setTolerance(.1);
     controller.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
@@ -37,10 +37,9 @@ public class DriveToCube extends CommandBase
   @Override
   public void initialize()
   {
+    LimelightHelpers.setLEDMode_ForceOn("");
+    LimelightHelpers.setCameraMode_Processor("");
     LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
-    //LimelightHelpers.setLEDMode_ForceOn("");
-    //LimelightHelpers.setCameraMode_Processor("");
-    //LimelightHelpers.setPipelineIndex("", 0); // Set the Limelight to the cone pipeline
     //SmartDashboard.putNumber("TX", LimelightHelpers.getTargetPose_CameraSpace("")[0]);
   }
 
@@ -50,27 +49,19 @@ public class DriveToCube extends CommandBase
    */
   @Override
   public void execute(){
-    // SmartDashboard.putNumber("Limelight X", LimelightHelpers.getTX(""));
-    // SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
-    Boolean HasTarget = LimelightHelpers.getTV("");
-    if (HasTarget == true){
-      SmartDashboard.putNumber("Limelight Target X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
-      SmartDashboard.putNumber("Limelight Target Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
-      SmartDashboard.putNumber("Limelight TX",LimelightHelpers.getTX(""));
-      SmartDashboard.putNumber("Limelight TY",LimelightHelpers.getTY(""));
-      if (LimelightHelpers.getNeuralClassID("") == 0) {
-        //SmartDashboard.putNumber("Limelight ID", LimelightHelpers.getNeuralClassID(""));
-          //Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
-          //Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
-          Double TX = LimelightHelpers.getTX("");
-          Double TY = LimelightHelpers.getTY("");
-          //Double CX = LimelightHelpers.getCameraPose3d_RobotSpace("").getX();
-          //Double CY = LimelightHelpers.getCameraPose3d_RobotSpace("").getY();
-          //Double CX = LimelightHelpers.getCameraPose_TargetSpace("")[0];
-          //Double CY = LimelightHelpers.getCameraPose_TargetSpace("")[1];
-          Double translationValX = controller.calculate(TX, 0); 
-          Double translationValY = controller.calculate(TY, 0); 
-          drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
+    if (LimelightHelpers.getNeuralClassID("") == 0) {
+      SmartDashboard.putNumber("Limelight ID", LimelightHelpers.getNeuralClassID(""));
+      if (LimelightHelpers.getTargetPose_CameraSpace("").length != 0) {
+        // Double TX = LimelightHelpers.getTargetPose_CameraSpace("")[0];
+        // Double TY = LimelightHelpers.getTargetPose_CameraSpace("")[1];
+        // Double CX = LimelightHelpers.getCameraPose_TargetSpace("")[0];
+        // Double CY = LimelightHelpers.getCameraPose_TargetSpace("")[1];
+
+        // SmartDashboard.putNumber("Limelight TX", TX);
+        // SmartDashboard.putNumber("Limelight TY", TY);
+        // Double translationValX = MathUtil.clamp(controller.calculate(TX, .5), -.25, .25); // Clamp the translation values 
+        // Double translationValY = MathUtil.clamp(controller.calculate(TY, .5), -.25, .25); // Clamp the translation values 
+        // drivebase.drive(new Translation2d(translationValX, translationValY), 0, true, false);
       }
     }
   }
@@ -104,11 +95,11 @@ public class DriveToCube extends CommandBase
   @Override
   public void end(boolean interrupted)
   {
-    //drivebase.lock();
+    drivebase.lock();
     // Turn off Limelight LED and set camera mode
-    //LimelightHelpers.setLEDMode_ForceOff("");
-    //LimelightHelpers.setCameraMode_Processor("");
-    //LimelightHelpers.setCameraMode_Driver("");
+    LimelightHelpers.setLEDMode_ForceOff("");
+    LimelightHelpers.setCameraMode_Processor("");
+    LimelightHelpers.setCameraMode_Driver("");
     
   }
 }
