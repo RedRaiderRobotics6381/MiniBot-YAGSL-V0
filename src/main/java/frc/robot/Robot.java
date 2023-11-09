@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.server.PathPlannerServer;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -19,7 +17,7 @@ import frc.robot.subsystems.LimelightHelpers;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.plaf.TreeUI;
+// import javax.swing.plaf.TreeUI;
 
 import swervelib.parser.SwerveParser;
 
@@ -54,7 +52,7 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit()
   {
-    PathPlannerServer.startServer(5811);
+    //PathPlannerServer.startServer(5811);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -144,6 +142,7 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
+    
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
     LimelightHelpers.setPipelineIndex("", 0);
