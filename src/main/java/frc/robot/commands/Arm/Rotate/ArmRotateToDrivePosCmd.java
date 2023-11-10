@@ -2,6 +2,7 @@ package frc.robot.commands.Arm.Rotate;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
@@ -38,6 +39,7 @@ public class ArmRotateToDrivePosCmd extends CommandBase {
     public void end(boolean interrupted) {
         rotateSubsystem.armRotateMotor.set(ArmConstants.posDriveGravity);
         Constants.ArmConstants.manipulatorOn = false;
+        Robot.ManualRotation = true;
     }
 
     @Override

@@ -2,9 +2,11 @@ package frc.robot.commands.Arm.Intake;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 //import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 //import frc.robot.RobotContainer;
 import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 
@@ -24,7 +26,7 @@ public class ArmIntakeOutCmd extends CommandBase {
 
     @Override
     public void execute() {
-        armSubsystem.intakeMotorL.set(Constants.ArmConstants.gOutputSpeed);
+        armSubsystem.intakeMotorL.set(-Constants.ArmConstants.gOutputSpeed);
         armSubsystem.intakeMotorR.set(-Constants.ArmConstants.gOutputSpeed);
     }
 
@@ -32,7 +34,7 @@ public class ArmIntakeOutCmd extends CommandBase {
     public void end(boolean interrupted) {
         armSubsystem.intakeMotorL.set(0.0);
         armSubsystem.intakeMotorR.set(0.0);
-        //RobotContainer.secondaryJoystick.setRumble(RumbleType.kRightRumble, 0);
+        RobotContainer.engineerXbox.setRumble(RumbleType.kRightRumble, 0);
     }
 
     @Override

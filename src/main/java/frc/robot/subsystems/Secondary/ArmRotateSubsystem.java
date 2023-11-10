@@ -9,7 +9,7 @@ import frc.robot.Constants;
 
 public class ArmRotateSubsystem extends SubsystemBase {
 
-    public CANSparkMax armRotateMotor;
+    public static CANSparkMax armRotateMotor;
     public SparkMaxAbsoluteEncoder armRotateEncoder;
 
     public ArmRotateSubsystem() {

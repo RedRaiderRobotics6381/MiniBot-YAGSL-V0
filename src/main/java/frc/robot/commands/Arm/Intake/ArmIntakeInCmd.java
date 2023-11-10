@@ -1,8 +1,10 @@
 package frc.robot.commands.Arm.Intake;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 //import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 //import frc.robot.RobotContainer;
 import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 
@@ -17,7 +19,7 @@ public class ArmIntakeInCmd extends CommandBase {
 
     @Override
     public void initialize() {
-        //RobotContainer.secondaryJoystick.setRumble(RumbleType.kRightRumble, 0.5);
+        RobotContainer.engineerXbox.setRumble(RumbleType.kRightRumble, 0.5);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ArmIntakeInCmd extends CommandBase {
     public void end(boolean interrupted) {
         armSubsystem.intakeMotorL.set(0.062);
         armSubsystem.intakeMotorR.set(0.062);
-        //RobotContainer.secondaryJoystick.setRumble(RumbleType.kRightRumble, 0);
+        RobotContainer.engineerXbox.setRumble(RumbleType.kRightRumble, 0);
     }
 
     @Override

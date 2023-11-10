@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -29,6 +30,7 @@ import frc.robot.commands.Vision.DriveToCube;
 //import frc.robot.commands.Vision.CubePickupHelper;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeOutCmd;
+import frc.robot.commands.swervedrive.auto.AutoBalanceCommand;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
 // import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
@@ -69,7 +71,7 @@ public class RobotContainer
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
-  // public final static XboxController secondaryJoystick = new XboxController(1);
+  public final static XboxController engineerXbox = new XboxController(1);
 
   private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
   private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
@@ -133,13 +135,26 @@ public class RobotContainer
 
     // Secondary
 
-    new JoystickButton(driverXbox, 1).onTrue(Commands.parallel(new ArmRotateToDrivePosCmd(armRotateSubsystem)));
-    new JoystickButton(driverXbox, 4).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
-    
+    //new JoystickButton(driverXbox, 1).onTrue(Commands.parallel(new ArmRotateToDrivePosCmd(armRotateSubsystem)));
+    //new JoystickButton(driverXbox, 4).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
+    new JoystickButton(driverXbox, 4).onTrue((new InstantCommand(drivebase::zeroGyro)));
 
-    new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(new DriveToCube(drivebase)); 
+    new JoystickButton(driverXbox, 2).whileTrue(new AutoBalanceCommand(drivebase));
+
+    new JoystickButton(engineerXbox,1 ).onTrue(Commands.parallel(new ArmRotateToDrivePosCmd(armRotateSubsystem)));
+
+    new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
+
+    new JoystickButton(engineerXbox,3 ).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
+
+    new JoystickButton(engineerXbox,2 ).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
+
+    //new JoystickButton(engineerXbox,7 ).whileTrue(new DriveGyro180Cmd(swerveSubsystem));
+
+
+    //new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
+    //new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
+    //new JoystickButton(driverXbox, 5).onTrue(new DriveToCube(drivebase)); 
     // double TX;
     // double TY;
     // DoubleSupplier translationValX;
