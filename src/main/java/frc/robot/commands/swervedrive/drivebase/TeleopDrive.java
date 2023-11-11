@@ -94,8 +94,9 @@ public class TeleopDrive extends CommandBase
     } else
     {
       // Drive using raw values.
-      swerve.drive(new Translation2d(xVelocity * controller.config.maxSpeed, yVelocity * controller.config.maxSpeed),
-                   angVelocity * controller.config.maxAngularVelocity,
+      //swerve.drive(new Translation2d(xVelocity * controller.config.maxSpeed, yVelocity * controller.config.maxSpeed),
+      swerve.drive(new Translation2d(xVelocity * 0.05, yVelocity * 0.05),
+                   angVelocity * controller.config.maxAngularVelocity * 0.5,
                    driveMode.getAsBoolean(), isOpenLoop);
     }
   }
