@@ -39,7 +39,6 @@ public class Robot extends TimedRobot
 
   private Timer disabledTimer;
   double targetPos = 150;
-  
   public Robot()
   {
     instance = this;
