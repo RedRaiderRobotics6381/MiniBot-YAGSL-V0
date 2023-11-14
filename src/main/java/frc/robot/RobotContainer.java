@@ -25,7 +25,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
 import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
 //import frc.robot.commands.Vision.CubePickupHelper;
-import frc.robot.commands.Vision.DriveToCube;
+import frc.robot.commands.Vision.DriveToObject;
 // import frc.robot.commands.Vision.ConePickupHelper;
 //import frc.robot.commands.Vision.CubePickupHelper;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
@@ -70,7 +70,7 @@ public class RobotContainer
   //CommandJoystick driverController = new CommandJoystick(1);
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
-  XboxController driverXbox = new XboxController(0);
+  public final static XboxController driverXbox = new XboxController(0);
   public final static XboxController engineerXbox = new XboxController(1);
 
   private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
@@ -148,13 +148,14 @@ public class RobotContainer
     new JoystickButton(engineerXbox,3 ).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
 
     new JoystickButton(engineerXbox,2 ).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-
     //new JoystickButton(engineerXbox,7 ).whileTrue(new DriveGyro180Cmd(swerveSubsystem));
 
 
     //new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     //new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    //new JoystickButton(driverXbox, 5).onTrue(new DriveToCube(drivebase)); 
+    new JoystickButton(driverXbox, 5).onTrue(new DriveToObject(drivebase, 0)); 
+    new JoystickButton(driverXbox, 6).onTrue(new DriveToObject(drivebase, 1)); 
+
     // double TX;
     // double TY;
     // DoubleSupplier translationValX;
