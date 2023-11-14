@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
+import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 //import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -25,6 +27,7 @@ public class DriveToObject extends CommandBase
   private final PIDController   controller;
   //private final String visionObject;
   private double visionObject;
+  private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
 
   public DriveToObject(SwerveSubsystem drivebase, double visionObject)
   {
@@ -70,11 +73,17 @@ public class DriveToObject extends CommandBase
         drivebase.drive(new Translation2d(translationValX * RobotContainer.driverXbox.getLeftTriggerAxis(),
                                           translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
                                           0, true, false);
+        while(RobotContainer.driverXbox.getLeftTriggerAxis() > 0) {
+          new ArmIntakeInCmd(armIntakeSubsystem);
         }
+      }
       if (visionObject == 1) {
         drivebase.drive(new Translation2d(translationValX * RobotContainer.driverXbox.getRightTriggerAxis(),
                                           translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
                                           0, true, false);
+          while(RobotContainer.driverXbox.getRightTriggerAxis() > 0) {
+            new ArmIntakeInCmd(armIntakeSubsystem);
+          }
         }
       }
         else {
