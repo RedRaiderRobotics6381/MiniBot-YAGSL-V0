@@ -8,11 +8,9 @@ import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
 public class ArmRotateToDrivePosCmd extends CommandBase {
 
-    private final ArmRotateSubsystem rotateSubsystem;
     double P;
 
     public ArmRotateToDrivePosCmd(ArmRotateSubsystem rotateSubsystem) {
-        this.rotateSubsystem = rotateSubsystem;
         addRequirements(rotateSubsystem);
     }
 

@@ -8,12 +8,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
-import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
 import java.io.File;
@@ -37,7 +35,7 @@ public class Robot extends TimedRobot
   private RobotContainer m_robotContainer;
 
   public static boolean ManualRotation;
-  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
+  //private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
 
   private Timer disabledTimer;
   double targetPos = 150;
@@ -67,8 +65,6 @@ public class Robot extends TimedRobot
     disabledTimer = new Timer();
     Autos.init();
     DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
-    LimelightHelpers.setLEDMode_ForceOn("");
-    LimelightHelpers.setCameraMode_Processor("");
   }
 
   /**
@@ -147,10 +143,6 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
-    
-    LimelightHelpers.setLEDMode_ForceOn("");
-    LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("", 0);
   }
 
   /**
@@ -159,23 +151,12 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
-    //SmartDashboard.putNumber("Limelight X", LimelightHelpers.getTX(""));
-    //SmartDashboard.putNumber("Limelight Y", LimelightHelpers.getTY(""));
-     Boolean HasTarget = LimelightHelpers.getTV("");
-     if (HasTarget == true){
-       //SmartDashboard.putNumber("Limelight Target X",LimelightHelpers.getTargetPose3d_CameraSpace("").getX());
-       //SmartDashboard.putNumber("Limelight Target Y",LimelightHelpers.getTargetPose3d_CameraSpace("").getY());
-       SmartDashboard.putNumber("Limelight TX",LimelightHelpers.getTX(""));
-       SmartDashboard.putNumber("Limelight TY",LimelightHelpers.getTY(""));
-     }
      if(ManualRotation){
       if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
          ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
         }
       }
-    //Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
-    //Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
   }
 
   @Override
