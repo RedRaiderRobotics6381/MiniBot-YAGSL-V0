@@ -43,7 +43,8 @@ public class ArmRotateToIntakePos extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(armRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake - ArmConstants.rotateoffset && armRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake + ArmConstants.rotateoffset){
+        if(armRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake - ArmConstants.rotateoffset && 
+           armRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake + ArmConstants.rotateoffset){
             return true;
         }else{
             return false;

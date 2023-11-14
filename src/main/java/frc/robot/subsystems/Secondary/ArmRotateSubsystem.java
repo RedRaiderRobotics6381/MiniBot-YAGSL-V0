@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Secondary;
 
+import com.fasterxml.jackson.databind.ser.std.StaticListSerializerBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -10,7 +11,7 @@ import frc.robot.Constants;
 public class ArmRotateSubsystem extends SubsystemBase {
 
     public static CANSparkMax armRotateMotor;
-    public SparkMaxAbsoluteEncoder armRotateEncoder;
+    public static SparkMaxAbsoluteEncoder armRotateEncoder;
 
     public ArmRotateSubsystem() {
 

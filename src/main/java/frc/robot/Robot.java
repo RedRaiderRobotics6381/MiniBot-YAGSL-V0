@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
 import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot
   private RobotContainer m_robotContainer;
 
   public static boolean ManualRotation;
+  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
 
   private Timer disabledTimer;
   double targetPos = 150;
@@ -167,7 +169,10 @@ public class Robot extends TimedRobot
        SmartDashboard.putNumber("Limelight TY",LimelightHelpers.getTY(""));
      }
      if(ManualRotation){
-      ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+      if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
+         ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
+          ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+        }
       }
     //Double TX = LimelightHelpers.getTargetPose3d_CameraSpace("").getX();
     //Double TY = LimelightHelpers.getTargetPose3d_CameraSpace("").getY();
