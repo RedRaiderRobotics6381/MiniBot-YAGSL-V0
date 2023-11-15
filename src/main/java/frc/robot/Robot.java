@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ArmConstants;
@@ -150,10 +151,10 @@ public class Robot extends TimedRobot
    */
   @Override
   public void teleopPeriodic()
-  {
+  {SmartDashboard.putNumber("Arm Position", ArmRotateSubsystem.armRotateEncoder.getPosition());
      if(ManualRotation){
       if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
-         ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
+         ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive+20){
           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
         }
       }

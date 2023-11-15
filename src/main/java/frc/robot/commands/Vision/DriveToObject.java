@@ -27,7 +27,7 @@ public class DriveToObject extends CommandBase
   private final PIDController   controller;
   //private final String visionObject;
   private double visionObject;
-  private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
+  ///private final ArmIntakeSubsystem ArmIntakeSubsystem = new ArmIntakeSubsystem();
 
   public DriveToObject(SwerveSubsystem drivebase, double visionObject)
   {
@@ -67,22 +67,24 @@ public class DriveToObject extends CommandBase
       SmartDashboard.putNumber("Limelight TY", TY);
       Double translationValX = controller.calculate(TX, 0);
       Double translationValY = controller.calculate(TY, 0);
+      SmartDashboard.putNumber("TranslationX", translationValX);
+      SmartDashboard.putNumber("TranslationY", translationValY);
       
       //q: multiply translationValX by the value of the right trigger on the xbox controller? 
       if (visionObject == 0) {
-        drivebase.drive(new Translation2d(translationValX * RobotContainer.driverXbox.getLeftTriggerAxis(),
-                                          translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
+        drivebase.drive(new Translation2d(translationValY * RobotContainer.driverXbox.getLeftTriggerAxis(),
+                                          translationValX * RobotContainer.driverXbox.getLeftTriggerAxis()),
                                           0, true, false);
         while(RobotContainer.driverXbox.getLeftTriggerAxis() > 0) {
-          new ArmIntakeInCmd(armIntakeSubsystem);
+          //ArmIntakeInCmd(ArmIntakeSubsystem);
         }
       }
       if (visionObject == 1) {
-        drivebase.drive(new Translation2d(translationValX * RobotContainer.driverXbox.getRightTriggerAxis(),
-                                          translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
+        drivebase.drive(new Translation2d(translationValY * RobotContainer.driverXbox.getRightTriggerAxis(),
+                                          translationValX * RobotContainer.driverXbox.getRightTriggerAxis()),
                                           0, true, false);
           while(RobotContainer.driverXbox.getRightTriggerAxis() > 0) {
-            new ArmIntakeInCmd(armIntakeSubsystem);
+            //new ArmIntakeInCmd(armIntakeSubsystem);
           }
         }
       }
