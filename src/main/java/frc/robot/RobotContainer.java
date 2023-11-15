@@ -123,34 +123,16 @@ public class RobotContainer
 
     //new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     //new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(new DriveToObject(drivebase, 0)); 
-    //new JoystickButton(driverXbox, 5).onTrue(new ArmRotateToIntakePos(armRotateSubsystem)); 
-    new JoystickButton(driverXbox, 6).onTrue(new DriveToObject(drivebase, 1));
+    //new JoystickButton(driverXbox, 5).onTrue(new DriveToObject(drivebase, 0)); 
+    //new JoystickButton(driverXbox, 5).onTrue(new ArmRotateToIntakePos(armRotateSubsystem));
+    new JoystickButton(driverXbox, 5).onTrue(Commands.parallel(
+                                                            new ArmIntakeInCmd(armIntakeSubsystem),
+                                                            new DriveToObject(drivebase, 0)));
+    //new JoystickButton(driverXbox, 6).onTrue(new DriveToObject(drivebase, 1));
     //new JoystickButton(driverXbox, 6).onTrue(new ArmRotateToIntakePos(armRotateSubsystem)); 
-
-    // Set the speed and angle of each wheel on the swerve drive
-    //new TeleopDrive(drivebase, null, null, null, null, false, false)
-    //   drivebase.drive(new Translation2d(
-    //                                     (MathUtil.clamp(controller.calculate(LimelightHelpers.getTX("") + .5, 0.25), 0, 2)),
-    //                                     (MathUtil.clamp(controller.calculate(LimelightHelpers.getTY("") - .1, -.1), -2, 2))),
-    //                                     0,
-    //                                     false,
-    //                                     false),
-    //   new ArmRotateToDrivePosCmd(armRotateSubsystem)
-    // ));
-    
-    //new JoystickButton(driverXbox, 6).onTrue(new CubePickupHelper(armIntakeSubsystem,armRotateSubsystem));
-    
-
-
-    
-    // new JoystickButton(secondaryJoystick, 9).onTrue(Commands.parallel(new ArmSliderBottomCmd(armSubsystem),
-    //               new ArmManipulatorSingleHumanCmd(rotateSubsystem)));
-
-    // new JoystickButton(secondaryJoystick, 3).onTrue(Commands.parallel(new ArmSliderBottomCmd(armSubsystem),
-    //               new ArmManipulatorHybridCmd(rotateSubsystem)));
-
-
+    new JoystickButton(driverXbox, 6).onTrue(Commands.parallel(
+                                                            new ArmIntakeInCmd(armIntakeSubsystem),
+                                                            new DriveToObject(drivebase, 1)));
   }
 
   /**

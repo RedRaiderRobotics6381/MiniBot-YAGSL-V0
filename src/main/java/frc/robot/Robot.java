@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -65,6 +66,11 @@ public class Robot extends TimedRobot
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
     Autos.init();
+    // Make sure you only configure port forwarding once in your robot code.
+    // Do not place these function calls in any periodic functions
+    for (int port = 5800; port <= 5807; port++) {
+        PortForwarder.add(port, "limelight.local", port);
+      }
     DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
   }
 
@@ -153,10 +159,20 @@ public class Robot extends TimedRobot
   public void teleopPeriodic()
   {SmartDashboard.putNumber("Arm Position", ArmRotateSubsystem.armRotateEncoder.getPosition());
      if(ManualRotation){
-      if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
-         ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive+20){
+      if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake){
+        if(RobotContainer.engineerXbox.getRawAxis(1) > 0){
           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
         }
+      }
+      if(ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
+        if(RobotContainer.engineerXbox.getRawAxis(1) < 0){
+          ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+        }
+      }
+      // if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
+      //    ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive+20){
+      //     ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+      //   }
       }
   }
 

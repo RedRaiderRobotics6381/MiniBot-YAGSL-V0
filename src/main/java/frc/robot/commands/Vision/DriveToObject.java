@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
@@ -23,11 +24,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class DriveToObject extends CommandBase
 {
 
+  private static final ArmIntakeSubsystem armIntakeSubsystem = null;
   private final SwerveSubsystem drivebase;
   private final PIDController   controller;
   //private final String visionObject;
   private double visionObject;
-  ///private final ArmIntakeSubsystem ArmIntakeSubsystem = new ArmIntakeSubsystem();
+  //private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
 
   public DriveToObject(SwerveSubsystem drivebase, double visionObject)
   {
@@ -61,30 +63,28 @@ public class DriveToObject extends CommandBase
     if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1) {
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 1);
       Double TX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      Double TY = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+      //Double TY = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       SmartDashboard.putString("Limelight TV", "True");
       SmartDashboard.putNumber("Limelight TX", TX);
-      SmartDashboard.putNumber("Limelight TY", TY);
-      Double translationValX = controller.calculate(TX, 0);
-      Double translationValY = controller.calculate(TY, 0);
-      SmartDashboard.putNumber("TranslationX", translationValX);
+      //SmartDashboard.putNumber("Limelight TY", TY);
+      //Notice the X and Y below are switched, this is because the limelight sees X as side to side
+      //and Y as up and down, and the robot sees X as forward back, and Y as side to side.
+      Double translationValY = controller.calculate(TX, 0);
+      //Double translationValY = controller.calculate(TY, 0);
+      //SmartDashboard.putNumber("TranslationX", translationValX);
       SmartDashboard.putNumber("TranslationY", translationValY);
-      
-      //q: multiply translationValX by the value of the right trigger on the xbox controller? 
       if (visionObject == 0) {
-        drivebase.drive(new Translation2d(translationValY * RobotContainer.driverXbox.getLeftTriggerAxis(),
-                                          translationValX * RobotContainer.driverXbox.getLeftTriggerAxis()),
+        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
                                           0, true, false);
         while(RobotContainer.driverXbox.getLeftTriggerAxis() > 0) {
-          //ArmIntakeInCmd(ArmIntakeSubsystem);
+           new ArmIntakeInCmd(armIntakeSubsystem);
         }
       }
       if (visionObject == 1) {
-        drivebase.drive(new Translation2d(translationValY * RobotContainer.driverXbox.getRightTriggerAxis(),
-                                          translationValX * RobotContainer.driverXbox.getRightTriggerAxis()),
+        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
                                           0, true, false);
           while(RobotContainer.driverXbox.getRightTriggerAxis() > 0) {
-            //new ArmIntakeInCmd(armIntakeSubsystem);
+            new ArmIntakeInCmd(armIntakeSubsystem);
           }
         }
       }
