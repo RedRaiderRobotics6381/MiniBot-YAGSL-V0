@@ -169,10 +169,10 @@ public class Robot extends TimedRobot
           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
         }
       }
-      // if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
-      //    ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive+20){
-      //     ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-      //   }
+      if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
+         ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
+           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+         }
       }
   }
 

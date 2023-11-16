@@ -74,14 +74,14 @@ public class DriveToObject extends CommandBase
       //SmartDashboard.putNumber("TranslationX", translationValX);
       SmartDashboard.putNumber("TranslationY", translationValY);
       if (visionObject == 0) {
-        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
+        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .05),
                                           0, true, false);
         while(RobotContainer.driverXbox.getLeftTriggerAxis() > 0) {
            new ArmIntakeInCmd(armIntakeSubsystem);
         }
       }
       if (visionObject == 1) {
-        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
+        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .05),
                                           0, true, false);
           while(RobotContainer.driverXbox.getRightTriggerAxis() > 0) {
             new ArmIntakeInCmd(armIntakeSubsystem);
@@ -126,7 +126,9 @@ public class DriveToObject extends CommandBase
   {
     //drivebase.lock();
     // Turn off Limelight LED and set camera mode);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); // Turn off the Limelight LEDs
+    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); // Turn off the Limelight LEDs
+    RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0);
+    RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0);
     //NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // Set the Limelight to the driver camera mode
     //NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0); // Set the Limelight to the cone pipeline
     
