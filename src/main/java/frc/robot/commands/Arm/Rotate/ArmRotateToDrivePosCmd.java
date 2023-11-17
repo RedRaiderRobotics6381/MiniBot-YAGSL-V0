@@ -23,11 +23,11 @@ public class ArmRotateToDrivePosCmd extends CommandBase {
     @Override
     public void execute() {
         P = ((Math.abs(ArmRotateSubsystem.armRotateEncoder.getPosition() - ArmConstants.posDrive) + 50) / 300);
-        if (ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive + ArmConstants.rotateoffset) {
+        if (ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive) {
             ArmRotateSubsystem.armRotateMotor.set(-ArmConstants.rotateSpeed * P*.75);
             // System.out.println("up");
         }
-        if (ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive - ArmConstants.rotateoffset) {
+        if (ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive) {
             ArmRotateSubsystem.armRotateMotor.set(ArmConstants.rotateSpeed * P*.75);
             // System.out.println("down");
         }

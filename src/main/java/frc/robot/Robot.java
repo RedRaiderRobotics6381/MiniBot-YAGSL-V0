@@ -36,7 +36,7 @@ public class Robot extends TimedRobot
 
   private RobotContainer m_robotContainer;
 
-  public static boolean ManualRotation;
+  public static boolean ManualRotation= true;
   //private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
 
   private Timer disabledTimer;
@@ -159,16 +159,17 @@ public class Robot extends TimedRobot
   public void teleopPeriodic()
   {SmartDashboard.putNumber("Arm Position", ArmRotateSubsystem.armRotateEncoder.getPosition());
      if(ManualRotation){
-      if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake){
-        if(RobotContainer.engineerXbox.getRawAxis(1) > 0){
+      if(ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake){
+        if(RobotContainer.engineerXbox.getRawAxis(1) > 0.05){
           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+          }else ArmRotateSubsystem.armRotateMotor.set(0);
         }
-      }
-      if(ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
-        if(RobotContainer.engineerXbox.getRawAxis(1) < 0){
+          else ArmRotateSubsystem.armRotateMotor.set(0);
+       if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
+        if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+          }else ArmRotateSubsystem.armRotateMotor.set(0);
         }
-      }
       if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
          ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
            ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);

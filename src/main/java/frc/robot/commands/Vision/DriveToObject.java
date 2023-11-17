@@ -61,7 +61,7 @@ public class DriveToObject extends CommandBase
   @Override
   public void execute(){
     if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1) {
-      RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 1);
+      RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
       Double TX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       //Double TY = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       SmartDashboard.putString("Limelight TV", "True");
@@ -74,17 +74,17 @@ public class DriveToObject extends CommandBase
       //SmartDashboard.putNumber("TranslationX", translationValX);
       SmartDashboard.putNumber("TranslationY", translationValY);
       if (visionObject == 0) {
-        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .05),
+        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .5),
                                           0, true, false);
         while(RobotContainer.driverXbox.getLeftTriggerAxis() > 0) {
-           new ArmIntakeInCmd(armIntakeSubsystem);
+           //new ArmIntakeInCmd(armIntakeSubsystem);
         }
       }
       if (visionObject == 1) {
-        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .05),
+        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .5),
                                           0, true, false);
           while(RobotContainer.driverXbox.getRightTriggerAxis() > 0) {
-            new ArmIntakeInCmd(armIntakeSubsystem);
+            //new ArmIntakeInCmd(armIntakeSubsystem);
           }
         }
       }
