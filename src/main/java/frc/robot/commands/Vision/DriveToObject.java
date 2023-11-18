@@ -75,33 +75,35 @@ public class DriveToObject extends CommandBase
     var result = camera.getLatestResult();  // Get the latest result from PhotonVision
     boolean hasTargets = result.hasTargets(); // Check if the latest result has any targets.
     PhotonTrackedTarget target = result.getBestTarget();
+    //int targetID = result.
     
-    if (hasTargets == true) {
+    while (hasTargets == true) {
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
       Double TX = target.getYaw();
       SmartDashboard.putString("PhotoVision Target", "True");
       SmartDashboard.putNumber("PhotonVision Yaw", TX);
-      Double translationValY = -controller.calculate(TX, 0);
+      Double translationValY = controller.calculate(TX, 0);
       SmartDashboard.putNumber("TranslationY", translationValY);
 
       if (visionObject == 0) {
           RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
           drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
-                                            0, false, false);
+                                            0,
+                                            false, false);
         }
 
-        if (visionObject == 1) {
-            RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0.25);
-            drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
-                                              0, false, false);
-          }
-      //}
-
-        } else {
-          SmartDashboard.putString("PhotoVision Target", "False");
-          RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0);
-          RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0);
-          }
+      if (visionObject == 1) {
+          RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0.25);
+          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
+                                            0,
+                                            false, false);
+        }
+      } //else {
+      //     SmartDashboard.putString("PhotoVision Target", "False");
+      //     RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0);
+      //     RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0);
+      //     end(true);
+      //     }
     }
 
   /**
