@@ -1,5 +1,11 @@
 package frc.robot.commands.Vision;
 
+//import java.util.List;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.common.hardware.VisionLEDMode;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 //import edu.wpi.first.math.MathUtil;
 // import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -10,11 +16,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
-import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
+//import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
+//import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 //import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import edu.wpi.first.networktables.NetworkTableInstance;
+//import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 /**
@@ -24,14 +30,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class DriveToObject extends CommandBase
 {
 
-  private static final ArmIntakeSubsystem armIntakeSubsystem = null;
+  //private static final ArmIntakeSubsystem armIntakeSubsystem = null;
   private final SwerveSubsystem drivebase;
   private final PIDController   controller;
   //private final String visionObject;
-  private double visionObject;
+  //private Double visionObject;
+  private int visionObject; //vision object int was double, change back to double for limelight
   //private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
+  PhotonCamera camera = new PhotonCamera("OV5647");
 
-  public DriveToObject(SwerveSubsystem drivebase, double visionObject)
+  public DriveToObject(SwerveSubsystem drivebase, int visionObject)  //vision object int was double, change back to double for limelight
   {
     this.visionObject = visionObject;
     this.drivebase = drivebase;
@@ -49,9 +57,13 @@ public class DriveToObject extends CommandBase
   @Override
   public void initialize()
   {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); // Use the LED Mode set in the current pipeline
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // Set the Limelight to the driver camera mode
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(visionObject); // Set the Limelight pipeline
+
+    camera.setLED(VisionLEDMode.kOn);
+    camera.setPipelineIndex(visionObject);
+    camera.setDriverMode(false);
+    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); // Use the LED Mode set in the current pipeline
+    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // Set the Limelight to the driver camera mode
+    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(visionObject); // Set the Limelight pipeline
   }
 
   /**
@@ -60,40 +72,37 @@ public class DriveToObject extends CommandBase
    */
   @Override
   public void execute(){
-    if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1) {
+    var result = camera.getLatestResult();  // Get the latest result from PhotonVision
+    boolean hasTargets = result.hasTargets(); // Check if the latest result has any targets.
+    PhotonTrackedTarget target = result.getBestTarget();
+    
+    if (hasTargets == true) {
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
-      Double TX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      //Double TY = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-      SmartDashboard.putString("Limelight TV", "True");
-      SmartDashboard.putNumber("Limelight TX", TX);
-      //SmartDashboard.putNumber("Limelight TY", TY);
-      //Notice the X and Y below are switched, this is because the limelight sees X as side to side
-      //and Y as up and down, and the robot sees X as forward back, and Y as side to side.
-      Double translationValY = controller.calculate(TX, 0);
-      //Double translationValY = controller.calculate(TY, 0);
-      //SmartDashboard.putNumber("TranslationX", translationValX);
+      Double TX = target.getYaw();
+      SmartDashboard.putString("PhotoVision Target", "True");
+      SmartDashboard.putNumber("PhotonVision Yaw", TX);
+      Double translationValY = -controller.calculate(TX, 0);
       SmartDashboard.putNumber("TranslationY", translationValY);
+
       if (visionObject == 0) {
-        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .5),
-                                          0, true, false);
-        while(RobotContainer.driverXbox.getLeftTriggerAxis() > 0) {
-           //new ArmIntakeInCmd(armIntakeSubsystem);
+          RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
+          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
+                                            0, false, false);
         }
-      }
-      if (visionObject == 1) {
-        drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .5),
-                                          0, true, false);
-          while(RobotContainer.driverXbox.getRightTriggerAxis() > 0) {
-            //new ArmIntakeInCmd(armIntakeSubsystem);
+
+        if (visionObject == 1) {
+            RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0.25);
+            drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
+                                              0, false, false);
           }
-        }
-      }
-        else {
-          SmartDashboard.putString("Limelight TV", "False");
+      //}
+
+        } else {
+          SmartDashboard.putString("PhotoVision Target", "False");
           RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0);
           RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0);
           }
-  }
+    }
 
   /**
    * <p>

@@ -48,6 +48,9 @@
       "/LiveWindow/Ungrouped/PIDController[18]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[19]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
       "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
@@ -109,8 +112,14 @@
         "Field": {
           "open": true
         },
+        "open": true
+      },
+      "photonvision": {
+        "OV5647": {
+          "open": true
+        },
         "open": true,
-        "swerve": {
+        "photonvision": {
           "open": true
         }
       }

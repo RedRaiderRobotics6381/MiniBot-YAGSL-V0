@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,9 +70,9 @@ public class Robot extends TimedRobot
     Autos.init();
     // Make sure you only configure port forwarding once in your robot code.
     // Do not place these function calls in any periodic functions
-    for (int port = 5800; port <= 5807; port++) {
-        PortForwarder.add(port, "limelight.local", port);
-      }
+    // for (int port = 5800; port <= 5807; port++) {
+    //     PortForwarder.add(port, "limelight.local", port);
+    //   }
     DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
   }
 
@@ -205,6 +207,13 @@ public class Robot extends TimedRobot
   @Override
   public void simulationInit()
   {
+    if(RobotBase.isSimulation()) {
+      NetworkTableInstance inst = NetworkTableInstance.getDefault();
+      inst.stopServer();
+      // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
+      inst.setServer("photonvision.local");
+      inst.startClient4("Robot Simulation");
+   }
   }
 
   /**
