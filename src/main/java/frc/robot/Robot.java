@@ -205,13 +205,13 @@ public class Robot extends TimedRobot
   @Override
   public void simulationInit()
   {
-    if(RobotBase.isSimulation()) {
-      NetworkTableInstance inst = NetworkTableInstance.getDefault();
-      inst.stopServer();
-      // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
-      inst.setServer("photonvision.local");
-      inst.startClient4("Robot Simulation");
-   }
+  //   if(RobotBase.isSimulation()) {
+  //     NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  //     inst.stopServer();
+  //     // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
+  //     inst.setServer("photonvision.local");
+  //     inst.startClient4("Robot Simulation");
+  //  }
   }
 
   /**
