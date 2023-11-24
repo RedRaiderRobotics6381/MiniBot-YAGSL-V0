@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
 //import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
+import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
 import java.io.File;
 import java.io.IOException;
@@ -150,6 +151,8 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
+    ArmRotateSubsystem.ArmRotateSetpoint = 90;
+
   }
 
   /**
