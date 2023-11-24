@@ -2,9 +2,17 @@ package frc.robot.commands.Vision;
 
 //import java.util.List;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.common.hardware.VisionLEDMode;
-import org.photonvision.targeting.PhotonTrackedTarget;
+//use this for PhotonVision
+  // import org.photonvision.PhotonCamera;
+  // import org.photonvision.common.hardware.VisionLEDMode;
+  // import org.photonvision.targeting.PhotonTrackedTarget;
+//
+//use this for LimeLight
+  // import edu.wpi.first.networktables.NetworkTable;
+  // import edu.wpi.first.networktables.NetworkTableEntry;
+  //import edu.wpi.first.networktables.NetworkTableInstance;
+  import frc.robot.subsystems.LimelightHelpers;
+//
 
 //import edu.wpi.first.math.MathUtil;
 // import edu.wpi.first.math.MathUtil;
@@ -18,7 +26,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 //import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
 //import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
-//import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -37,8 +44,11 @@ public class DriveToObject extends CommandBase
   //private Double visionObject;
   private int visionObject; //vision object int was double, change back to double for limelight
   //private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
-  PhotonCamera camera = new PhotonCamera("OV5647");
-
+  
+  //use this for PhotonVision
+    //PhotonCamera camera = new PhotonCamera("OV5647");
+  //
+  
   public DriveToObject(SwerveSubsystem drivebase, int visionObject)  //vision object int was double, change back to double for limelight
   {
     this.visionObject = visionObject;
@@ -58,12 +68,14 @@ public class DriveToObject extends CommandBase
   public void initialize()
   {
 
-    camera.setLED(VisionLEDMode.kOn);
-    camera.setPipelineIndex(visionObject);
-    camera.setDriverMode(false);
-    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0); // Use the LED Mode set in the current pipeline
-    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // Set the Limelight to the driver camera mode
-    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(visionObject); // Set the Limelight pipeline
+    //use this for PhotonVision
+      //camera.setLED(VisionLEDMode.kOn);
+      //camera.setPipelineIndex(visionObject);
+      //camera.setDriverMode(false);
+    //
+    //use this for LimeLight
+      LimelightHelpers.setPipelineIndex("",visionObject);
+    //
   }
 
   /**
@@ -72,29 +84,39 @@ public class DriveToObject extends CommandBase
    */
   @Override
   public void execute(){
-    var result = camera.getLatestResult();  // Get the latest result from PhotonVision
-    boolean hasTargets = result.hasTargets(); // Check if the latest result has any targets.
-    PhotonTrackedTarget target = result.getBestTarget();
-    //int targetID = result.
+
+
+    //use this for PhotonVision
+      // var result = camera.getLatestResult();  // Get the latest result from PhotonVision
+      // boolean hasTargets = result.hasTargets(); // Check if the latest result has any targets.
+      // PhotonTrackedTarget target = result.getBestTarget();
+      //int targetID = result.
+    //
+    //use this for LimeLight
+    boolean hasTargets = LimelightHelpers.getTV("");
+
+    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("TX").getDouble(0); // Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
+    //double hasTargets = NetworkTableInstance.getDefault().getTable("limelight").getEntry("TV").getDouble(0); // Whether the limelight has any valid targets (0 or 1)
     
     while (hasTargets == true) {
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
-      Double TX = target.getYaw();
-      SmartDashboard.putString("PhotoVision Target", "True");
-      SmartDashboard.putNumber("PhotonVision Yaw", TX);
+      //double TX = target.getYaw();  //Uncomment this line if using PhotonVision
+      double TX = LimelightHelpers.getTX("");
+      SmartDashboard.putString("Vision Target", "True");
+      SmartDashboard.putNumber("Vision Target Y", TX);
       Double translationValY = controller.calculate(TX, 0);
       SmartDashboard.putNumber("TranslationY", translationValY);
 
       if (visionObject == 0) {
           RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
-          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis()),
+          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .25),
                                             0,
                                             false, false);
         }
 
       if (visionObject == 1) {
           RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0.25);
-          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis()),
+          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .25),
                                             0,
                                             false, false);
         }

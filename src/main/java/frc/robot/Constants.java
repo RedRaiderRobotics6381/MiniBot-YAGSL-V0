@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+//import org.opencv.core.Mat.Atable;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -55,15 +57,50 @@ public final class Constants
        public static final int kArmRotateMotor = 13;
        public static final int kManipulatorIntakeMotorL = 14;
        public static final int kManipulatorIntakeMotorR = 15;
+       public static final int kMotorPort = 4;
+
+       public static final double kP = 1;
+   
+       // These are fake gains; in actuality these must be determined individually for each robot
+       public static final double kSVolts = 1;
+       public static final double kGVolts = 1;
+       public static final double kVVoltSecondPerRad = 0.5;
+       public static final double kAVoltSecondSquaredPerRad = 0.1;
+   
+       public static final double kMaxVelocityRadPerSecond = 3;
+       public static final double kMaxAccelerationRadPerSecSquared = 10;
+   
+       public static final int[] kEncoderPorts = new int[] {4, 5};
+       public static final int kEncoderPPR = 256;
+       public static final double kEncoderDistancePerPulse = 2.0 * Math.PI / kEncoderPPR;
+   
+       // The offset of the arm from the horizontal in its neutral position,
+       // measured from the horizontal
+       public static final double kArmOffset = 0.5;
 
        public static final double gOutputSpeed = 1.00;
        public static final double gIntakeSpeed = 0.50;
-       public static final double rotateoffset = 2.5;
-       public static final double posDrive = 200;
-       public static final double posIntake = 132.5;
+       public static final double rotateoffset = Math.toRadians(2.5);
+       public static final double posOffset = 72.5;
+       public static final double posDrive = 190; //Was 200 see note in ArmRotateSubsystem.java
+       public static final double posIntake = 90; //Was 132.5 see note in ArmRotateSubsystem.java
        public static final double posDriveGravity = 0.01;
        public static final double posIntakeGravity = 0.03;
        public static final double rotateSpeed = 1;
+
+       public static final double armRotatekP = 5e-5; 
+       public static final double armRotatekI = 1e-6;
+       public static final double armRotatekD = 0; 
+       public static final double armRotatekIz = 0; 
+       public static final double armRotatekFF = 0.000156; 
+       public static final double armRotatekMaxOutput = 1; 
+       public static final double armRotatekMinOutput = -1;
+       public static final double armRotateMaxRPM = 5700;
+       public static final double armRotateMaxVel = 2000;
+       public static final double armRotateMaxAcc = 1500;
+       public static final double armRotateMinVel = 0;
+       public static final double armRotateAllowedErr = 0;
+       public static final int armRotateSmartMotionSlot = 0;
  
        public static boolean manipulatorOn = false;
        public static boolean manipulatorManual = false;

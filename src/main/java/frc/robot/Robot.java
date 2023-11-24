@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.Filesystem;
 //import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ArmConstants;
+//import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
-import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
+//import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
 
 import java.io.File;
 import java.io.IOException;
@@ -156,25 +156,25 @@ public class Robot extends TimedRobot
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic()
-  {SmartDashboard.putNumber("Arm Position", ArmRotateSubsystem.armRotateEncoder.getPosition());
-     if(ManualRotation){
-      if(ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake){
-        if(RobotContainer.engineerXbox.getRawAxis(1) > 0.05){
-          ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-          }else ArmRotateSubsystem.armRotateMotor.set(0);
-        }
-          else ArmRotateSubsystem.armRotateMotor.set(0);
-       if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
-        if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
-          ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-          }else ArmRotateSubsystem.armRotateMotor.set(0);
-        }
-      if(ArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
-         ArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
-           ArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-         }
-      }
+  public void teleopPeriodic(){
+  // SmartDashboard.putNumber("Arm Position", OldArmRotateSubsystem.armRotateEncoder.getPosition());
+  //    if(ManualRotation){
+  //     if(OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake){
+  //       if(RobotContainer.engineerXbox.getRawAxis(1) > 0.05){
+  //         OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+  //         }else OldArmRotateSubsystem.armRotateMotor.set(0);
+  //       }
+  //         else OldArmRotateSubsystem.armRotateMotor.set(0);
+  //      if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
+  //       if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
+  //         OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+  //         }else OldArmRotateSubsystem.armRotateMotor.set(0);
+  //       }
+  //     if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
+  //        OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
+  //          OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
+  //        }
+  //     }
   }
 
   @Override
