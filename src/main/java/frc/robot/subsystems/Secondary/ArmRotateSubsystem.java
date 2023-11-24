@@ -17,7 +17,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
   public static CANSparkMax m_armMotor;
   public static SparkMaxPIDController m_armPIDController;
   public static SparkMaxAbsoluteEncoder m_armEncoder;
-  public static double ArmRotateSetpoint;
+  public static double ArmRotateSetpoint = 90.0;
   /** Creates a new ArmRotateSubSys. */
   public ArmRotateSubsystem(double ArmRotateSetpoint) {
         // initialize motor
@@ -32,6 +32,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         m_armEncoder.setPositionConversionFactor(360);
         m_armEncoder.setZeroOffset(ArmConstants.posOffset);
+        //m_armEncoder.setInverted(true);
     
         // initialze PID controller and encoder objects
         m_armPIDController = m_armMotor.getPIDController();
@@ -75,6 +76,6 @@ public class ArmRotateSubsystem extends SubsystemBase {
       * setReference method on an existing pid object and setting
       * the control type to kSmartMotion
     */
-//    m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+    m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
 }
