@@ -19,7 +19,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
   public static SparkMaxAbsoluteEncoder m_armEncoder;
   public static double ArmRotateSetpoint;
   /** Creates a new ArmRotateSubSys. */
-  public ArmRotateSubsystem() {
+  public ArmRotateSubsystem(double ArmRotateSetpoint) {
         // initialize motor
         m_armMotor = new CANSparkMax(ArmConstants.kArmRotateMotor, MotorType.kBrushless);
 
