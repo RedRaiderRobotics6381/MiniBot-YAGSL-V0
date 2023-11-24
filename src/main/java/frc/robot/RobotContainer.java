@@ -57,7 +57,7 @@ public class RobotContainer
 
   
   private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
-  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem(0);
+  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
   // private final PIDController controller;
 
   /**
