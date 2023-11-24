@@ -10,9 +10,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
 public class ArmRotateCmd extends CommandBase {
+  private double ArmRotateSetpoint;
+  private ArmRotateSubsystem armRotateSubsystem;
+
+
   /** Creates a new BlankCmd. */
-  public ArmRotateCmd(ArmRotateSubsystem armRotateSubSys, double ArmRotateSetpoint) {
-    addRequirements(armRotateSubSys);
+  public ArmRotateCmd(ArmRotateSubsystem armRotateSubsystem, double ArmRotateSetpoint) { //Q: Where does ArmRotateSetpoint get its value from? 
+    this.armRotateSubsystem = armRotateSubsystem;
+    this.ArmRotateSetpoint = ArmRotateSetpoint;
+    addRequirements(armRotateSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,7 +31,7 @@ public class ArmRotateCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmRotateSubsystem.m_armPIDController.setReference(ArmRotateSubsystem.ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+    armRotateSubsystem.m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
 
   // Called once the command ends or is interrupted.

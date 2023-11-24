@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmRotateSubsystem extends SubsystemBase {
   public static CANSparkMax m_armMotor;
-  public static SparkMaxPIDController m_armPIDController;
+  public SparkMaxPIDController m_armPIDController;
   public static SparkMaxAbsoluteEncoder m_armEncoder;
   public static double ArmRotateSetpoint;
   /** Creates a new ArmRotateSubSys. */

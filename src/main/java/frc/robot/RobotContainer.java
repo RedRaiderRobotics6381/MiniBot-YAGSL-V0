@@ -126,8 +126,8 @@ public class RobotContainer
 
 
     //new JoystickButton(engineerXbox,1 ).onTrue(Commands.parallel(new ArmRotateToDrivePosCmd(armRotateSubsystem)));
-    new JoystickButton(engineerXbox,1 ).onTrue(new ArmRotateCmd(armRotateSubsystem, 190));  // 180 is vertical
-    new JoystickButton(engineerXbox,4 ).onTrue(new ArmRotateCmd(armRotateSubsystem, 90)); //90 is horizontal
+    new JoystickButton(engineerXbox,1 ).onTrue(new ArmRotateCmd(armRotateSubsystem, ArmConstants.posDrive));  // 180 is vertical
+    new JoystickButton(engineerXbox,4 ).onTrue(new ArmRotateCmd(armRotateSubsystem, ArmConstants.posIntake)); //90 is horizontal
     //new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateCmd(armRotateSubsystem, 90))); //90 is horizontal
 
     //new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
