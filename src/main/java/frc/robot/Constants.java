@@ -88,7 +88,7 @@ public final class Constants
        public static final double posIntakeGravity = 0.03;
        public static final double rotateSpeed = 1;
 
-       public static final double armRotatekP = .000005; 
+       public static final double armRotatekP = .00005; 
        public static final double armRotatekI = .000001;
        public static final double armRotatekD = 0; 
        public static final double armRotatekIz = 0; 
@@ -99,7 +99,7 @@ public final class Constants
        public static final double armRotateMaxVel = 2000;
        public static final double armRotateMaxAcc = 1500;
        public static final double armRotateMinVel = 0;
-       public static final double armRotateAllowedErr = 0;
+       public static final double armRotateAllowedErr = .01;
        public static final int armRotateSmartMotionSlot = 0;
  
        public static boolean manipulatorOn = false;

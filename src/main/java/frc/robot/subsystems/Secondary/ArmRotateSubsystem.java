@@ -9,6 +9,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,8 +19,10 @@ public class ArmRotateSubsystem extends SubsystemBase {
   public SparkMaxPIDController m_armPIDController;
   public static SparkMaxAbsoluteEncoder m_armEncoder;
   public static double ArmRotateSetpoint;
-  /** Creates a new ArmRotateSubSys. */
-  public ArmRotateSubsystem(double ArmRotateSetpoint) {
+  //public static double RotateManualPos;
+  /** Creates a new ArmRotateSubSys. 
+ * @param armRotateSubsystem*/
+  public ArmRotateSubsystem() {
         // initialize motor
         m_armMotor = new CANSparkMax(ArmConstants.kArmRotateMotor, MotorType.kBrushless);
 
@@ -67,7 +70,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
     
   }
 
-  @Override
+@Override
   public void periodic() {
     // This method will be called once per scheduler run
 
@@ -80,10 +83,14 @@ public class ArmRotateSubsystem extends SubsystemBase {
   }
   public CommandBase rotateDriveCommand() {
     // implicitly require `this`
-    return this.runOnce(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
+    return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
   }
   public CommandBase rotateIntakeCommand() {
     // implicitly require `this`
-    return this.runOnce(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
+    return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
+  }
+  public CommandBase rotateManualCommand() {
+    // implicitly require `this`
+    return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
   }
 }

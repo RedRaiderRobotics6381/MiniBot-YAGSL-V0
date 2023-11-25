@@ -17,13 +17,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ArmConstants;
+//import frc.robot.Constants.ArmConstants;
 //import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Arm.Rotate.ArmPosition;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
-import frc.robot.commands.Arm.Rotate.ArmRotateCmd;
+//import frc.robot.commands.Arm.Rotate.ArmRotateCmd;
 import frc.robot.commands.Vision.DriveToObject;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeOutCmd;
@@ -35,6 +35,7 @@ import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 //import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
 //import frc.robot.subsystems.Secondary.NewArmRotateSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -55,10 +56,13 @@ public class RobotContainer
   public final static XboxController driverXbox = new XboxController(0);
   public final static XboxController engineerXbox = new XboxController(1);
 
+
+
   
   private final ArmIntakeSubsystem armIntakeSubsystem = new ArmIntakeSubsystem();
-  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem(ArmRotateSubsystem.ArmRotateSetpoint);
+  private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
   // private final PIDController controller;
+  public static double RotateManualPos;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -125,9 +129,12 @@ public class RobotContainer
     //new JoystickButton(engineerXbox,1 ).onTrue(new ArmRotateSubSys() -> (190));
 
 
-    //new JoystickButton(engineerXbox,1 ).onTrue(Commands.parallel(new ArmRotateToDrivePosCmd(armRotateSubsystem)));
-    new JoystickButton(engineerXbox,1 ).onTrue(new ArmRotateCmd(armRotateSubsystem, ArmConstants.posDrive));  // 180 is vertical
-    new JoystickButton(engineerXbox,4 ).onTrue(new ArmRotateCmd(armRotateSubsystem, ArmConstants.posIntake)); //90 is horizontal
+    new JoystickButton(engineerXbox,1 ).onTrue(armRotateSubsystem.rotateDriveCommand());
+    new JoystickButton(engineerXbox,4 ).onTrue(armRotateSubsystem.rotateIntakeCommand());
+    
+
+    //new JoystickButton(engineerXbox,1 ).onTrue(new armRotateSubsystem(armRotateSubsystem, ArmConstants.posDrive));  // 180 is vertical
+    //new JoystickButton(engineerXbox,4 ).onTrue(new armRotateSubsystem(armRotateSubsystem, ArmConstants.posIntake)); //90 is horizontal
     //new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateCmd(armRotateSubsystem, 90))); //90 is horizontal
 
     //new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
@@ -149,11 +156,16 @@ public class RobotContainer
                                                             //new ArmIntakeInCmd(armIntakeSubsystem),
                                                             //new DriveToObject(drivebase, 1)));
 
-    if(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
-    while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-      new ArmRotateCmd(armRotateSubsystem, ArmRotateSubsystem.ArmRotateSetpoint = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1));
+    // if(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
+    // while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
+    //   RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
+    //   armRotateSubsystem.rotateManualCommand();
+    //   }
+    // }
+    while(RobotContainer.engineerXbox.getRawAxis(1) != 0){
+        RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
+        armRotateSubsystem.rotateManualCommand();
       }
-    }
       //      else OldArmRotateSubsystem.armRotateMotor.set(0);
       //   if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
       //    if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
