@@ -14,12 +14,11 @@ public class ArmRotateCmd extends CommandBase {
   private ArmRotateSubsystem armRotateSubsystem;
 
 
-  /** Creates a new BlankCmd. */
-  public ArmRotateCmd(ArmRotateSubsystem armRotateSubsystem, double ArmRotateSetpoint) { //Q: Where does ArmRotateSetpoint get its value from? 
+
+  public ArmRotateCmd(ArmRotateSubsystem armRotateSubsystem, double ArmRotateSetpoint) { 
     this.armRotateSubsystem = armRotateSubsystem;
     this.ArmRotateSetpoint = ArmRotateSetpoint;
     addRequirements(armRotateSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

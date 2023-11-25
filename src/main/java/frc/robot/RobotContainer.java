@@ -149,9 +149,9 @@ public class RobotContainer
                                                             //new ArmIntakeInCmd(armIntakeSubsystem),
                                                             //new DriveToObject(drivebase, 1)));
 
-    if(RobotContainer.engineerXbox.getRawAxis(1) > 0.05 || RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
+    if(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
     while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-      new ArmRotateCmd(armRotateSubsystem, ArmRotateSubsystem.ArmRotateSetpoint = ArmRotateSubsystem.ArmRotateSetpoint +  0.5 * engineerXbox.getRawAxis(1));
+      new ArmRotateCmd(armRotateSubsystem, ArmRotateSubsystem.ArmRotateSetpoint = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1));
       }
     }
       //      else OldArmRotateSubsystem.armRotateMotor.set(0);

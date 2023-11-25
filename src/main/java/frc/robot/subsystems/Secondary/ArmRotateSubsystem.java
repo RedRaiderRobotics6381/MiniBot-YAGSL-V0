@@ -10,7 +10,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.ArmConstants;
-
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmRotateSubsystem extends SubsystemBase {
@@ -77,5 +77,13 @@ public class ArmRotateSubsystem extends SubsystemBase {
       * the control type to kSmartMotion
     */
     m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+  }
+  public CommandBase rotateDriveCommand() {
+    // implicitly require `this`
+    return this.runOnce(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
+  }
+  public CommandBase rotateIntakeCommand() {
+    // implicitly require `this`
+    return this.runOnce(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
   }
 }
