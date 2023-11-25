@@ -76,7 +76,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
       * setReference method on an existing pid object and setting
       * the control type to kSmartMotion
     */
-    m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+    //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
   public CommandBase rotateDriveCommand() {
     // implicitly require `this`

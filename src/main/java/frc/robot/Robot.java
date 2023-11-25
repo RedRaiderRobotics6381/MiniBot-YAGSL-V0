@@ -149,8 +149,8 @@ public class Robot extends TimedRobot
     {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.setDriveMode();
-    m_robotContainer.setMotorBrake(true);
+    //m_robotContainer.setDriveMode();
+    //m_robotContainer.setMotorBrake(true);
     ArmRotateSubsystem.ArmRotateSetpoint = 90;
 
   }

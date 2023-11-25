@@ -88,8 +88,8 @@ public final class Constants
        public static final double posIntakeGravity = 0.03;
        public static final double rotateSpeed = 1;
 
-       public static final double armRotatekP = 5e-5; 
-       public static final double armRotatekI = 1e-6;
+       public static final double armRotatekP = .000005; 
+       public static final double armRotatekI = .000001;
        public static final double armRotatekD = 0; 
        public static final double armRotatekIz = 0; 
        public static final double armRotatekFF = 0.000156; 
