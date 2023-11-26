@@ -1,5 +1,24 @@
 {
+  "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Autonomous/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/Autonomous Mode": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Pigeon 2 [20]": "Gyro"
+    }
+  },
   "NetworkTables Settings": {
-    "mode": "Client (NT4)"
+    "listenAddress": "10.63.81.2",
+    "mode": "Server",
+    "serverTeam": "6381"
   }
 }
