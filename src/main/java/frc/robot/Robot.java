@@ -20,6 +20,8 @@ import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import java.io.File;
 import java.io.IOException;
 
+import com.revrobotics.CANSparkMax;
+
 // import javax.swing.plaf.TreeUI;
 
 import swervelib.parser.SwerveParser;
@@ -160,6 +162,7 @@ public class Robot extends TimedRobot
    */
   @Override
   public void teleopPeriodic(){
+    ArmRotateSubsystem.m_armPIDController.setReference(ArmRotateSubsystem.ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   // SmartDashboard.putNumber("Arm Position", OldArmRotateSubsystem.armRotateEncoder.getPosition());
   //    if(ManualRotation){
   //     if(OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake){

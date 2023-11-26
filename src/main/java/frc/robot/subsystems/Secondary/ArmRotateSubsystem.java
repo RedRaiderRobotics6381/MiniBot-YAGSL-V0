@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmRotateSubsystem extends SubsystemBase {
   public static CANSparkMax m_armMotor;
-  public SparkMaxPIDController m_armPIDController;
+  public static SparkMaxPIDController m_armPIDController;
   public static SparkMaxAbsoluteEncoder m_armEncoder;
   public static double ArmRotateSetpoint;
   public static double RotateManualPos;
@@ -80,12 +80,12 @@ public class ArmRotateSubsystem extends SubsystemBase {
       * setReference method on an existing pid object and setting
       * the control type to kSmartMotion
     */
-    while(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
-      if (m_armEncoder.getPosition() > ArmConstants.posDrive && m_armEncoder.getPosition() < ArmConstants.posIntake) {
-        ArmRotateSetpoint = m_armEncoder.getPosition() + 1 * RobotContainer.engineerXbox.getRawAxis(1);
-        }
-      }
-    m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+    // while(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
+    //   if (m_armEncoder.getPosition() * 360 > ArmConstants.posDrive && m_armEncoder.getPosition() * 360 < ArmConstants.posIntake) {
+    //     ArmRotateSetpoint = ArmRotateSetpoint + 1 * RobotContainer.engineerXbox.getRawAxis(1);
+    //     }
+    //   }
+    //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
   public CommandBase rotateDriveCommand() {
     // implicitly require `this`
