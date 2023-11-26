@@ -19,6 +19,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
   public SparkMaxPIDController m_armPIDController;
   public static SparkMaxAbsoluteEncoder m_armEncoder;
   public static double ArmRotateSetpoint;
+  public static double RotateManualPos;
   //public static double RotateManualPos;
   /** Creates a new ArmRotateSubSys. 
  * @param armRotateSubsystem*/
@@ -79,15 +80,19 @@ public class ArmRotateSubsystem extends SubsystemBase {
       * setReference method on an existing pid object and setting
       * the control type to kSmartMotion
     */
+    while(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
+      RotateManualPos = m_armEncoder.getPosition() + 1 * RobotContainer.engineerXbox.getRawAxis(1);
+      m_armPIDController.setReference(RotateManualPos, CANSparkMax.ControlType.kSmartMotion);  
+    }
     //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
   public CommandBase rotateDriveCommand() {
     // implicitly require `this`
-    return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
+    return this.runOnce(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
   }
   public CommandBase rotateIntakeCommand() {
     // implicitly require `this`
-    return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
+    return this.runOnce(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
   }
   public CommandBase rotateManualCommand() {
     // implicitly require `this`

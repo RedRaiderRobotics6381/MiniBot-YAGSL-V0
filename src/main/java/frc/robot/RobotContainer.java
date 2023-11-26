@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-//import frc.robot.Constants.ArmConstants;
-//import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Arm.Rotate.ArmPosition;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
@@ -162,10 +160,10 @@ public class RobotContainer
     //   armRotateSubsystem.rotateManualCommand();
     //   }
     // }
-    while(RobotContainer.engineerXbox.getRawAxis(1) != 0){
-        RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
-        armRotateSubsystem.rotateManualCommand();
-      }
+    // while(RobotContainer.engineerXbox.getRawAxis(1) != 0){
+    //     RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
+    //     armRotateSubsystem.rotateManualCommand();
+    //   }
       //      else OldArmRotateSubsystem.armRotateMotor.set(0);
       //   if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
       //    if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
