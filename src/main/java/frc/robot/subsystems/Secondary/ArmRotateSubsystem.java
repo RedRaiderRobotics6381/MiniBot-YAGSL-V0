@@ -81,9 +81,11 @@ public class ArmRotateSubsystem extends SubsystemBase {
       * the control type to kSmartMotion
     */
     while(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
-      RotateManualPos = m_armEncoder.getPosition() + 1 * RobotContainer.engineerXbox.getRawAxis(1);
-      m_armPIDController.setReference(RotateManualPos, CANSparkMax.ControlType.kSmartMotion);  
-    }
+      if (m_armEncoder.getPosition() > ArmConstants.posDrive && m_armEncoder.getPosition() < ArmConstants.posIntake) {
+          RotateManualPos = m_armEncoder.getPosition() + 1 * RobotContainer.engineerXbox.getRawAxis(1);
+          m_armPIDController.setReference(RotateManualPos, CANSparkMax.ControlType.kSmartMotion);  
+        }
+      }
     //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
   public CommandBase rotateDriveCommand() {
