@@ -53,7 +53,7 @@ public class DriveToObject extends CommandBase
   {
     this.visionObject = visionObject;
     this.drivebase = drivebase;
-    controller = new PIDController(.50, 0.0, 0.0);
+    controller = new PIDController(1.0, 0.0, 0.0);
     controller.setTolerance(.1);
     controller.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
@@ -99,7 +99,7 @@ public class DriveToObject extends CommandBase
     //double hasTargets = NetworkTableInstance.getDefault().getTable("limelight").getEntry("TV").getDouble(0); // Whether the limelight has any valid targets (0 or 1)
     
     while (hasTargets == true) {
-      RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
+      //RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
       //double TX = target.getYaw();  //Uncomment this line if using PhotonVision
       double TX = LimelightHelpers.getTX("");
       SmartDashboard.putString("Vision Target", "True");
@@ -107,20 +107,26 @@ public class DriveToObject extends CommandBase
       Double translationValY = controller.calculate(TX, 0);
       SmartDashboard.putNumber("TranslationY", translationValY);
 
-      if (visionObject == 0) {
-          RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
-          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .25),
-                                            0,
-                                            false, false);
-        }
+      //if (visionObject == 0) {
+      //    RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
+      drivebase.drive(new Translation2d(0.0, translationValY),
+                      0,
+                      false,
+                      false);}
+      // drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getLeftTriggerAxis() * .25),
+      //                                       0,
+      //                                       false, false);}
+      //}
+      
+      //  }
 
-      if (visionObject == 1) {
-          RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0.25);
-          drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .25),
-                                            0,
-                                            false, false);
-        }
-      } //else {
+      //if (visionObject == 1) {
+        //  RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0.25);
+        //  drivebase.drive(new Translation2d(0.0, translationValY * RobotContainer.driverXbox.getRightTriggerAxis() * .25),
+        //                                    0,
+        //                                    false, false);
+      //  }
+      //} //else {
       //     SmartDashboard.putString("PhotoVision Target", "False");
       //     RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0);
       //     RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kRightRumble, 0);

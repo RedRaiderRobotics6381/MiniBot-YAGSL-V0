@@ -162,7 +162,7 @@ public class Robot extends TimedRobot
    */
   @Override
   public void teleopPeriodic(){
-    ArmRotateSubsystem.m_armPIDController.setReference(ArmRotateSubsystem.ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+    //ArmRotateSubsystem.m_armPIDController.setReference(ArmRotateSubsystem.ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   // SmartDashboard.putNumber("Arm Position", OldArmRotateSubsystem.armRotateEncoder.getPosition());
   //    if(ManualRotation){
   //     if(OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake){

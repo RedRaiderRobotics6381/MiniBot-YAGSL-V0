@@ -88,11 +88,11 @@ public final class Constants
        public static final double posIntakeGravity = 0.03;
        public static final double rotateSpeed = 1;
 
-       public static final double armRotatekP = .00000025;
-       public static final double armRotatekI = .000001;
-       public static final double armRotatekD = 0; 
+       public static final double armRotatekP = .00000024;
+       public static final double armRotatekI = .000000;
+       public static final double armRotatekD = 0;
        public static final double armRotatekIz = 0; 
-       public static final double armRotatekFF = 0.000156; 
+       public static final double armRotatekFF = 0.000156;
        public static final double armRotatekMaxOutput = 1; 
        public static final double armRotatekMinOutput = -1;
        public static final double armRotateMaxRPM = 5700;
