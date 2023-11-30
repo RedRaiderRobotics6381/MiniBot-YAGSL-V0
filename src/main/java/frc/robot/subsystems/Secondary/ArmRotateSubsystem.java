@@ -36,26 +36,26 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armMotor.restoreFactoryDefaults();  //Remove this when we remove the burnFlash() call below
         m_armEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         m_armEncoder.setPositionConversionFactor(360);
-        m_armEncoder.setZeroOffset(ArmConstants.posOffset);
+        m_armEncoder.setZeroOffset(72.5); //ArmConstants.posOffset);
         //m_armEncoder.setInverted(true);
     
         // initialze PID controller and encoder objects
         m_armPIDController = m_armMotor.getPIDController();
         m_armPIDController.setFeedbackDevice(m_armEncoder);
-        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, ArmConstants.posLowerLimit);
-        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, ArmConstants.posUpperLimit); 
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 85); //ArmConstants.posLowerLimit
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 220); //ArmConstants.posUpperLimit); 
         m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
         m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
         m_armMotor.setSmartCurrentLimit(20);
         m_armMotor.burnFlash();  //Remove this after everything is up and running to save flash wear
     
         // set PID coefficients
-        m_armPIDController.setP(ArmConstants.armRotatekP);
-        m_armPIDController.setI(ArmConstants.armRotatekI);
-        m_armPIDController.setD(ArmConstants.armRotatekD);
-        m_armPIDController.setIZone(ArmConstants.armRotatekIz);
-        m_armPIDController.setFF(ArmConstants.armRotatekFF);
-        m_armPIDController.setOutputRange(ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
+        m_armPIDController.setP(.00000024); //ArmConstants.armRotatekP);
+        m_armPIDController.setI(0.0); //ArmConstants.armRotatekI);
+        m_armPIDController.setD(0.0); //ArmConstants.armRotatekD);
+        m_armPIDController.setIZone(0.0); //ArmConstants.armRotatekIz);
+        m_armPIDController.setFF(.000156); //ArmConstants.armRotatekFF);
+        m_armPIDController.setOutputRange(-1.0, 1.0); //ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
     
         /**
          * Smart Motion coefficients are set on a SparkMaxPIDController object
@@ -69,10 +69,10 @@ public class ArmRotateSubsystem extends SubsystemBase {
          * - setSmartMotionAllowedClosedLoopError() will set the max allowed
          * error for the pid controller in Smart Motion mode
          */
-        m_armPIDController.setSmartMotionMaxVelocity(ArmConstants.armRotateMaxVel, ArmConstants.armRotateSmartMotionSlot);
-        m_armPIDController.setSmartMotionMinOutputVelocity(ArmConstants.armRotateMinVel, ArmConstants.armRotateSmartMotionSlot);
-        m_armPIDController.setSmartMotionMaxAccel(ArmConstants.armRotateMaxAcc, ArmConstants.armRotateSmartMotionSlot);
-        m_armPIDController.setSmartMotionAllowedClosedLoopError(ArmConstants.armRotateAllowedErr, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionMaxVelocity(5000.0,0); //ArmConstants.armRotateMaxVel, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionMinOutputVelocity(0.0, 0); //ArmConstants.armRotateMinVel, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionMaxAccel(3000.0,0); //ArmConstants.armRotateMaxAcc, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionAllowedClosedLoopError(0.01, 0); //ArmConstants.armRotateAllowedErr, ArmConstants.armRotateSmartMotionSlot);
     
     
   }
@@ -93,6 +93,8 @@ public class ArmRotateSubsystem extends SubsystemBase {
     //   }
     //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
+
+
   
   public CommandBase rotatePosCommand(double ArmRotateSetpoint) {
     // implicitly require `this`
@@ -118,4 +120,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
   //   // implicitly require `this`
   //   return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
   // }
+  public void setDefaultCommand() {
+    m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+  }
 }

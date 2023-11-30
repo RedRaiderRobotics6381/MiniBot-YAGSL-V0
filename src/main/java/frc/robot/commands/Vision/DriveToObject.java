@@ -116,7 +116,7 @@ public class DriveToObject extends CommandBase
     
     while (tv > 0) {
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+      //double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       //RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
       //double TX = target.getYaw();  //Uncomment this line if using PhotonVision
       //double TX = LimelightHelpers.getTX("");
