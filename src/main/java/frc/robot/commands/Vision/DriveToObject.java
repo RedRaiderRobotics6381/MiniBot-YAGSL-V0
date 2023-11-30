@@ -8,10 +8,11 @@ package frc.robot.commands.Vision;
   // import org.photonvision.targeting.PhotonTrackedTarget;
 //
 //use this for LimeLight
-  // import edu.wpi.first.networktables.NetworkTable;
-  // import edu.wpi.first.networktables.NetworkTableEntry;
-  //import edu.wpi.first.networktables.NetworkTableInstance;
-  import frc.robot.subsystems.LimelightHelpers;
+  //import edu.wpi.first.networktables.NetworkTable;
+  //import edu.wpi.first.networktables.NetworkTableEntry;
+  import edu.wpi.first.networktables.*;
+//use this for LimelightHelpers  
+  //import frc.robot.subsystems.LimelightHelpers;
 //
 
 //import edu.wpi.first.math.MathUtil;
@@ -54,7 +55,7 @@ public class DriveToObject extends CommandBase
     this.visionObject = visionObject;
     this.drivebase = drivebase;
     controller = new PIDController(1.0, 0.0, 0.0);
-    controller.setTolerance(.1);
+    controller.setTolerance(1);
     controller.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
@@ -74,7 +75,15 @@ public class DriveToObject extends CommandBase
       //camera.setDriverMode(false);
     //
     //use this for LimeLight
-      LimelightHelpers.setPipelineIndex("",visionObject);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(visionObject);
+    
+
+    //use this for LimelightHelpers
+      // LimelightHelpers.setCameraMode_Processor("");
+      // LimelightHelpers.setLEDMode_ForceOn("");
+      // LimelightHelpers.setPipelineIndex("",visionObject);
     //
   }
 
@@ -93,18 +102,27 @@ public class DriveToObject extends CommandBase
       //int targetID = result.
     //
     //use this for LimeLight
-    boolean hasTargets = LimelightHelpers.getTV("");
+
+    double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+    //use this for LimelightHelpers
+      //double tx = LimelightHelpers.getTX("");
+      //double ty = LimelightHelpers.getTY("");
+      //double tv = LimelightHelpers.getTV("");
+      //boolean hasTargets = LimelightHelpers.getTV("");
+    //
 
     //NetworkTableInstance.getDefault().getTable("limelight").getEntry("TX").getDouble(0); // Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
     //double hasTargets = NetworkTableInstance.getDefault().getTable("limelight").getEntry("TV").getDouble(0); // Whether the limelight has any valid targets (0 or 1)
     
-    while (hasTargets == true) {
+    while (tv > 0) {
+      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       //RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kLeftRumble, 0.25);
       //double TX = target.getYaw();  //Uncomment this line if using PhotonVision
-      double TX = LimelightHelpers.getTX("");
+      //double TX = LimelightHelpers.getTX("");
       SmartDashboard.putString("Vision Target", "True");
-      SmartDashboard.putNumber("Vision Target Y", TX);
-      Double translationValY = controller.calculate(TX, 0);
+      SmartDashboard.putNumber("Vision Target Y", tx);
+      Double translationValY = controller.calculate(tx, 0);
       SmartDashboard.putNumber("TranslationY", translationValY);
 
       //if (visionObject == 0) {

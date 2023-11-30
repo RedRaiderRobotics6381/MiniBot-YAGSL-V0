@@ -84,6 +84,9 @@ public final class Constants
        public static final double posOffset = 72.5;
        public static final double posDrive = 190; //Was 200 see note in ArmRotateSubsystem.java
        public static final double posIntake = 90; //Was 132.5 see note in ArmRotateSubsystem.java
+       public static final double ArmRotateSetpoint = 90;
+       public static final float posLowerLimit = 85;
+       public static final float posUpperLimit = 220;
        public static final double posDriveGravity = 0.01;
        public static final double posIntakeGravity = 0.03;
        public static final double rotateSpeed = 1;

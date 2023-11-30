@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Arm.Rotate.ArmPosition;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
@@ -127,8 +128,10 @@ public class RobotContainer
     //new JoystickButton(engineerXbox,1 ).onTrue(new ArmRotateSubSys() -> (190));
 
 
-    new JoystickButton(engineerXbox,1 ).onTrue(armRotateSubsystem.rotateDriveCommand());
-    new JoystickButton(engineerXbox,4 ).onTrue(armRotateSubsystem.rotateIntakeCommand());
+    //new JoystickButton(engineerXbox,1 ).onTrue(armRotateSubsystem.rotateDriveCommand());
+    //new JoystickButton(engineerXbox,4 ).onTrue(armRotateSubsystem.rotateIntakeCommand());
+    new JoystickButton(engineerXbox, 1).onTrue(armRotateSubsystem.rotatePosCommand(ArmConstants.posDrive));
+    new JoystickButton(engineerXbox, 4).onTrue(armRotateSubsystem.rotatePosCommand(ArmConstants.posIntake));
     
 
     //new JoystickButton(engineerXbox,1 ).onTrue(new armRotateSubsystem(armRotateSubsystem, ArmConstants.posDrive));  // 180 is vertical
@@ -154,7 +157,7 @@ public class RobotContainer
                                                             //new ArmIntakeInCmd(armIntakeSubsystem),
                                                             //new DriveToObject(drivebase, 1)));
 
-    // if(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
+    // if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
     // while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
     //   RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
     //   armRotateSubsystem.rotateManualCommand();

@@ -9,8 +9,9 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.RobotContainer;
+//import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -41,6 +42,11 @@ public class ArmRotateSubsystem extends SubsystemBase {
         // initialze PID controller and encoder objects
         m_armPIDController = m_armMotor.getPIDController();
         m_armPIDController.setFeedbackDevice(m_armEncoder);
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, ArmConstants.posLowerLimit);
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, ArmConstants.posUpperLimit); 
+        m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+        m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        m_armMotor.setSmartCurrentLimit(20);
         m_armMotor.burnFlash();  //Remove this after everything is up and running to save flash wear
     
         // set PID coefficients
@@ -87,17 +93,27 @@ public class ArmRotateSubsystem extends SubsystemBase {
     //   }
     //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
-  public CommandBase rotateDriveCommand() {
+  
+  public CommandBase rotatePosCommand(double ArmRotateSetpoint) {
     // implicitly require `this`
-    // return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
-    return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive);
+    return this.runOnce(() -> m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion));
+  }
+  
+  // public void rotateDriveCommand() {
+  //   // implicitly require `this`
+  //   // return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
+  //   //return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive);
+  //   ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive;
+  //   //m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion);
 
-  }
-  public CommandBase rotateIntakeCommand() {
-    // implicitly require `this`
-    //return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
-    return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake);
-  }
+  // }
+  // public void rotateIntakeCommand() {
+  //   // implicitly require `this`
+  //   //return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
+  //   //return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake);
+  //   ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake;
+  //   //m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion);
+  // }
   // public CommandBase rotateManualCommand() {
   //   // implicitly require `this`
   //   return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
