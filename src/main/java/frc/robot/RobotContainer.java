@@ -24,6 +24,7 @@ import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
 //import frc.robot.commands.Arm.Rotate.ArmRotateCmd;
 import frc.robot.commands.Vision.DriveToObject;
+import frc.robot.commands.Vision.DriveToObjectV2;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeOutCmd;
 import frc.robot.commands.swervedrive.auto.AutoBalanceCommand;
@@ -148,21 +149,21 @@ public class RobotContainer
     //new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
     //new JoystickButton(driverXbox, 5).onTrue(new DriveToObject(drivebase, 0)); 
     //new JoystickButton(driverXbox, 5).onTrue(new ArmRotateToIntakePos(armRotateSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(Commands.parallel(new DriveToObject(drivebase, 0)));
+    new JoystickButton(driverXbox, 5).onTrue(Commands.parallel(new DriveToObjectV2(drivebase, 0)));
                                                             //new ArmIntakeInCmd(armIntakeSubsystem),
                                                             //new DriveToObject(drivebase, 0)));
     //new JoystickButton(driverXbox, 6).onTrue(new DriveToObject(drivebase, 1));
     //new JoystickButton(driverXbox, 6).onTrue(new ArmRotateToIntakePos(armRotateSubsystem)); 
-    new JoystickButton(driverXbox, 6).onTrue(Commands.parallel(new DriveToObject(drivebase, 1)));
+    new JoystickButton(driverXbox, 6).onTrue(Commands.parallel(new DriveToObjectV2(drivebase, 1)));
                                                             //new ArmIntakeInCmd(armIntakeSubsystem),
                                                             //new DriveToObject(drivebase, 1)));
 
-    // if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
-    // while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-    //   RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
-    //   armRotateSubsystem.rotateManualCommand();
-    //   }
-    // }
+    if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
+    while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
+      RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRightY();
+      armRotateSubsystem.rotatePosCommand(RotateManualPos);
+      }
+    }
     // while(RobotContainer.engineerXbox.getRawAxis(1) != 0){
     //     RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
     //     armRotateSubsystem.rotateManualCommand();

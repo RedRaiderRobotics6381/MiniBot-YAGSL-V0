@@ -27,7 +27,7 @@ public class DriveToObjectV2 extends CommandBase
   {
     this.visionObject = visionObject;
     this.swerveSubsystem = swerveSubsystem;
-    controller = new PIDController(1.0, 0.0, 0.0);
+    controller = new PIDController(3.5, 0.0, 0.0);
     controller.setTolerance(1);
     controller.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
@@ -62,7 +62,7 @@ public class DriveToObjectV2 extends CommandBase
       double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
 
       // This is the value in meters per second that is used to drive the robot
-      double translationValy = MathUtil.clamp(controller.calculate(tx, 0.0), -0.5 * throttle, 0.5 * throttle);
+      double translationValy = MathUtil.clamp(controller.calculate(tx, 0.0), -2.5 * throttle, 2.5 * throttle);
       swerveSubsystem.drive(new Translation2d(0, translationValy), 0.0, false, false);
     }
     else{
