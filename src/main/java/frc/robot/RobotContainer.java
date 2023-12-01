@@ -149,7 +149,7 @@ public class RobotContainer
     //new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
     //new JoystickButton(driverXbox, 5).onTrue(new DriveToObject(drivebase, 0)); 
     //new JoystickButton(driverXbox, 5).onTrue(new ArmRotateToIntakePos(armRotateSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue(Commands.parallel(new DriveToObjectV2(drivebase, 0)));
+    new JoystickButton(driverXbox, 5).onTrue((new DriveToObjectV2(drivebase, 0)));
                                                             //new ArmIntakeInCmd(armIntakeSubsystem),
                                                             //new DriveToObject(drivebase, 0)));
     //new JoystickButton(driverXbox, 6).onTrue(new DriveToObject(drivebase, 1));

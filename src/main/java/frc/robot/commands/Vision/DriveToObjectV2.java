@@ -55,7 +55,8 @@ public class DriveToObjectV2 extends CommandBase
   {
     SmartDashboard.putBoolean("At Tolerance", controller.atSetpoint());
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-    
+    SmartDashboard.putNumber("Pipeline",NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0));
+    SmartDashboard.putNumber("TV", tv);
     if (tv > 0){
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0.25);
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
