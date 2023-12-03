@@ -1,6 +1,8 @@
 package frc.robot.commands.Vision;
 
-
+import org.photonvision.PhotonCamera;
+import org.photonvision.common.hardware.VisionLEDMode;
+import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,16 +18,16 @@ import edu.wpi.first.wpilibj.XboxController;
  * Auto Balance command using a simple PID controller. Created by Team 3512
  * https://github.com/frc3512/Robot-2023/blob/main/src/main/java/frc3512/robot/commands/AutoBalance.java
  */
-public class DriveToObjectV2 extends CommandBase
+public class PVDriveToObjectCmd extends CommandBase
 {
 
   private final SwerveSubsystem swerveSubsystem;
   private final PIDController   controller;
   private double visionObject;
+  PhotonCamera camera = new PhotonCamera("OV5647");
 
-  public DriveToObjectV2(SwerveSubsystem swerveSubsystem, double visionObject)
+  public PVDriveToObjectCmd(SwerveSubsystem swerveSubsystem, double visionObject)
   {
-    this.visionObject = visionObject;
     this.swerveSubsystem = swerveSubsystem;
     controller = new PIDController(3.5, 0.0, 0.0);
     controller.setTolerance(1);
@@ -33,6 +35,7 @@ public class DriveToObjectV2 extends CommandBase
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
     addRequirements(this.swerveSubsystem);
+    this.visionObject = visionObject;
   }
 
   /**
@@ -41,9 +44,10 @@ public class DriveToObjectV2 extends CommandBase
   @Override
   public void initialize()
   {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(visionObject);
+    camera.setLED(VisionLEDMode.kOn);
+    camera.setPipelineIndex((int)visionObject);
+    camera.setDriverMode(false);
+
   }
 
   /**
@@ -53,21 +57,23 @@ public class DriveToObjectV2 extends CommandBase
   @Override
   public void execute()
   {
+    var result = camera.getLatestResult();  // Get the latest result from PhotonVision
+    boolean hasTargets = result.hasTargets(); // Check if the latest result has any targets.
+    PhotonTrackedTarget target = result.getBestTarget();
+
     SmartDashboard.putBoolean("At Tolerance", controller.atSetpoint());
-    double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-    SmartDashboard.putNumber("Pipeline",NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0));
-    SmartDashboard.putNumber("TV", tv);
-    if (tv > 0){
+    if (hasTargets == true){
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0.25);
-      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
+      double tx = target.getYaw();
+      
+      //double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
 
       // This is the value in meters per second that is used to drive the robot
-      double translationValy = MathUtil.clamp(controller.calculate(tx, 0.0), -2.5 * throttle, 2.5 * throttle);
+      double translationValy = MathUtil.clamp(controller.calculate(tx, 0.0), -2.5 , 2.5); //* throttle, 2.5 * throttle);
       swerveSubsystem.drive(new Translation2d(0, translationValy), 0.0, false, false);
     }
     else{
-      end(isFinished());
+      end(true);
       }
     
       // double translationVal = MathUtil.clamp(controller.calculate(swerveSubsystem.getPitch().getDegrees(), 0.0), -0.5,

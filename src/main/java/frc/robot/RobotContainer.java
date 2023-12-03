@@ -23,8 +23,9 @@ import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
 //import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
 //import frc.robot.commands.Arm.Rotate.ArmRotateCmd;
-import frc.robot.commands.Vision.DriveToObject;
-import frc.robot.commands.Vision.DriveToObjectV2;
+//import frc.robot.commands.Vision.DriveToObject;
+//import frc.robot.commands.Vision.LLDriveToObjectCmd;
+import frc.robot.commands.Vision.PVDriveToObjectCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeOutCmd;
 import frc.robot.commands.swervedrive.auto.AutoBalanceCommand;
@@ -116,47 +117,25 @@ public class RobotContainer
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    // new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     // new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
 
     // Secondary
 
-    //new JoystickButton(driverXbox, 1).onTrue(Commands.parallel(new ArmRotateToDrivePosCmd(armRotateSubsystem)));
-    //new JoystickButton(driverXbox, 4).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
     new JoystickButton(driverXbox, 4).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 2).whileTrue(new AutoBalanceCommand(drivebase));
-    //new JoystickButton(engineerXbox,1 ).onTrue(new ArmRotateSubSys() -> (190));
 
+    new JoystickButton(engineerXbox, 1).onTrue(armRotateSubsystem.rotatePosCommand(ArmConstants.posDrive)); // 180 is vertical
+    new JoystickButton(engineerXbox, 4).onTrue(armRotateSubsystem.rotatePosCommand(ArmConstants.posIntake)); //90 is horizontal
 
-    //new JoystickButton(engineerXbox,1 ).onTrue(armRotateSubsystem.rotateDriveCommand());
-    //new JoystickButton(engineerXbox,4 ).onTrue(armRotateSubsystem.rotateIntakeCommand());
-    new JoystickButton(engineerXbox, 1).onTrue(armRotateSubsystem.rotatePosCommand(ArmConstants.posDrive));
-    new JoystickButton(engineerXbox, 4).onTrue(armRotateSubsystem.rotatePosCommand(ArmConstants.posIntake));
-    
-
-    //new JoystickButton(engineerXbox,1 ).onTrue(new armRotateSubsystem(armRotateSubsystem, ArmConstants.posDrive));  // 180 is vertical
-    //new JoystickButton(engineerXbox,4 ).onTrue(new armRotateSubsystem(armRotateSubsystem, ArmConstants.posIntake)); //90 is horizontal
-    //new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateCmd(armRotateSubsystem, 90))); //90 is horizontal
-
-    //new JoystickButton(engineerXbox,4 ).onTrue(Commands.parallel(new ArmRotateToIntakePos(armRotateSubsystem)));
     new JoystickButton(engineerXbox,3 ).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     new JoystickButton(engineerXbox,2 ).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
     //new JoystickButton(engineerXbox,7 ).whileTrue(new DriveGyro180Cmd(swerveSubsystem));
 
-
-    //new JoystickButton(driverXbox, 3).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
-    //new JoystickButton(driverXbox, 2).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    //new JoystickButton(driverXbox, 5).onTrue(new DriveToObject(drivebase, 0)); 
-    //new JoystickButton(driverXbox, 5).onTrue(new ArmRotateToIntakePos(armRotateSubsystem));
-    new JoystickButton(driverXbox, 5).onTrue((new DriveToObjectV2(drivebase, 0)));
-                                                            //new ArmIntakeInCmd(armIntakeSubsystem),
-                                                            //new DriveToObject(drivebase, 0)));
-    //new JoystickButton(driverXbox, 6).onTrue(new DriveToObject(drivebase, 1));
-    //new JoystickButton(driverXbox, 6).onTrue(new ArmRotateToIntakePos(armRotateSubsystem)); 
-    new JoystickButton(driverXbox, 6).onTrue(Commands.parallel(new DriveToObjectV2(drivebase, 1)));
-                                                            //new ArmIntakeInCmd(armIntakeSubsystem),
-                                                            //new DriveToObject(drivebase, 1)));
+    //new JoystickButton(driverXbox, 5).whileTrue(new LLDriveToObjectCmd(drivebase, 0));
+    //new JoystickButton(driverXbox, 6).whileTrue(new LLDriveToObjectCmd(drivebase, 1));
+    new JoystickButton(driverXbox, 5).whileTrue(new PVDriveToObjectCmd(drivebase, 0));
+    new JoystickButton(driverXbox, 6).whileTrue(new PVDriveToObjectCmd(drivebase, 1));
 
     if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
     while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
@@ -164,20 +143,6 @@ public class RobotContainer
       armRotateSubsystem.rotatePosCommand(RotateManualPos);
       }
     }
-    // while(RobotContainer.engineerXbox.getRawAxis(1) != 0){
-    //     RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + 1 * engineerXbox.getRawAxis(1);
-    //     armRotateSubsystem.rotateManualCommand();
-    //   }
-      //      else OldArmRotateSubsystem.armRotateMotor.set(0);
-      //   if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
-      //    if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
-      //      OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-      //      }else OldArmRotateSubsystem.armRotateMotor.set(0);
-      //    }
-      //  if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
-      //     OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
-      //       OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-      //     }
 }
 
   /**

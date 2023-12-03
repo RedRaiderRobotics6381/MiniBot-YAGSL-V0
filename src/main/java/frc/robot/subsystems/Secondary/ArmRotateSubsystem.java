@@ -98,7 +98,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
   
   public CommandBase rotatePosCommand(double ArmRotateSetpoint) {
     // implicitly require `this`
-    return this.runOnce(() -> m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion));
+    return this.run(() -> m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion));
   }
   
   // public void rotateDriveCommand() {
