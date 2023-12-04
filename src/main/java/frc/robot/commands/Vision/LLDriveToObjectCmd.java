@@ -19,16 +19,20 @@ public class LLDriveToObjectCmd extends CommandBase
 {
 
   private final SwerveSubsystem swerveSubsystem;
-  private final PIDController   controller;
+  private final PIDController   yController;
+  private final PIDController   xController;
   private double visionObject;
   
 
   public LLDriveToObjectCmd(SwerveSubsystem swerveSubsystem, double visionObject)
   {
     this.swerveSubsystem = swerveSubsystem;
-    controller = new PIDController(3.5, 0.0, 0.0);
-    controller.setTolerance(1);
-    controller.setSetpoint(0.0);
+    yController = new PIDController(2, 0.0, 0.0);
+    yController.setTolerance(1);
+    yController.setSetpoint(0.0);
+    xController = new PIDController(2, 0.0, 0.0);
+    xController.setTolerance(1);
+    xController.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
     addRequirements(this.swerveSubsystem);
@@ -53,7 +57,7 @@ public class LLDriveToObjectCmd extends CommandBase
   @Override
   public void execute()
   {
-    SmartDashboard.putBoolean("At Tolerance", controller.atSetpoint());
+    //SmartDashboard.putBoolean("At Tolerance", yController.atSetpoint());
     
     boolean tv = LimelightHelpers.getTV("");
     SmartDashboard.putNumber("Pipeline",LimelightHelpers.getCurrentPipelineIndex("")); 
@@ -61,15 +65,20 @@ public class LLDriveToObjectCmd extends CommandBase
     if (tv == true){
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0.25);
       double tx = LimelightHelpers.getTX("");
+      double ty = LimelightHelpers.getTY("");
+
       //double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
 
       // This is the value in meters per second that is used to drive the robot
-      double translationValy = MathUtil.clamp(controller.calculate(tx, 0.0), -2.5 , 2.5); //* throttle, 2.5 * throttle);
-      SmartDashboard.putNumber("Translation Value", translationValy);
-      swerveSubsystem.drive(new Translation2d(0, translationValy), 0.0, false, false);
+      double translationValy = MathUtil.clamp(yController.calculate(tx, 0.0), -2 , 2); //* throttle, 2.5 * throttle);
+      double translationValx = MathUtil.clamp(xController.calculate(ty, 0.0), -2 , 2); //* throttle, 2.5 * throttle);
+      SmartDashboard.putNumber("Y Translation Value", translationValy);
+      SmartDashboard.putNumber("X Translation Value", translationValx);
+      
+      swerveSubsystem.drive(new Translation2d(translationValx, translationValy), 0.0, false, false);
     }
     else{
-      end(true);
+      //end(true);
       }
     
       // double translationVal = MathUtil.clamp(controller.calculate(swerveSubsystem.getPitch().getDegrees(), 0.0), -0.5,
@@ -93,7 +102,7 @@ public class LLDriveToObjectCmd extends CommandBase
   @Override
   public boolean isFinished()
   {
-    return controller.atSetpoint();
+    return yController.atSetpoint() && xController.atSetpoint();
   }
 
   /**

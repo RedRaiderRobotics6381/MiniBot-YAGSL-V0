@@ -215,7 +215,7 @@ public class Robot extends TimedRobot
       NetworkTableInstance inst = NetworkTableInstance.getDefault();
       inst.stopServer();
       // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
-      inst.setServer("photonvision.local");
+      inst.setServer("10.63.81.11");
       inst.startClient4("Robot Simulation");
    }
   }
