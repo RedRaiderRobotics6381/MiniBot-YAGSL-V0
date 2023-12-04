@@ -3,10 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import edu.wpi.first.networktables.NetworkTableInstance;
+//import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
+//import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -211,13 +211,13 @@ public class Robot extends TimedRobot
   @Override
   public void simulationInit()
   {
-    if(RobotBase.isSimulation()) {
-      NetworkTableInstance inst = NetworkTableInstance.getDefault();
-      inst.stopServer();
-      // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
-      inst.setServer("10.63.81.11");
-      inst.startClient4("Robot Simulation");
-   }
+  //   if(RobotBase.isSimulation()) {
+  //     NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  //     inst.stopServer();
+  //     // Change the IP address in the below function to the IP address you use to connect to the PhotonVision UI.
+  //     inst.setServer("10.63.81.11");
+  //     inst.startClient4("Robot Simulation");
+  //  }
   }
 
   /**
