@@ -58,9 +58,8 @@ public class LLDriveToObjectCmd extends CommandBase
   public void execute()
   {
     //SmartDashboard.putBoolean("At Tolerance", yController.atSetpoint());
-    
-    boolean tv = LimelightHelpers.getTV("");
-    SmartDashboard.putNumber("Pipeline",LimelightHelpers.getCurrentPipelineIndex("")); 
+    boolean tv = LimelightHelpers.getTV("");  //tv = target visible
+    SmartDashboard.putNumber("Pipeline",LimelightHelpers.getCurrentPipelineIndex(""));
     SmartDashboard.putBoolean("TV", tv);
     if (tv == true){
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0.25);
