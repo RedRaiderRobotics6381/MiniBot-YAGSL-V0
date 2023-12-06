@@ -77,7 +77,8 @@ public class LLDriveToObjectCmd extends CommandBase
       swerveSubsystem.drive(new Translation2d(translationValx, translationValy), 0.0, false, false);
     }
     else{
-      //end(true);
+      swerveSubsystem.drive(new Translation2d(0, 0), 0.0, false, false);
+      end(true);
       }
     
       // double translationVal = MathUtil.clamp(controller.calculate(swerveSubsystem.getPitch().getDegrees(), 0.0), -0.5,

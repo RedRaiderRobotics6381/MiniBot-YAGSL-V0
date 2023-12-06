@@ -225,12 +225,12 @@ public class SwerveModule
   {
     double     velocity;
     Rotation2d azimuth;
-    double     omega;
+    //double     omega;
     if (!SwerveDriveTelemetry.isSimulation)
     {
       velocity = driveMotor.getVelocity();
       azimuth = Rotation2d.fromDegrees(angleMotor.getPosition());
-      omega = Math.toRadians(angleMotor.getVelocity());
+      //omega = Math.toRadians(angleMotor.getVelocity());
     } else
     {
       return simModule.getState();
