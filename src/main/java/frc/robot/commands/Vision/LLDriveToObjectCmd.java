@@ -115,7 +115,7 @@ public class LLDriveToObjectCmd extends CommandBase
   @Override
   public void end(boolean interrupted)
   {
-    //swerveSubsystem.lock();
+    swerveSubsystem.lock();
     RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0);
   }
 }
