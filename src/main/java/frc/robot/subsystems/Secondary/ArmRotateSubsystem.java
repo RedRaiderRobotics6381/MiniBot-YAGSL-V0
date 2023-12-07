@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -43,9 +44,10 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armPIDController = m_armMotor.getPIDController();
         m_armPIDController.setFeedbackDevice(m_armEncoder);
         m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 85); //ArmConstants.posLowerLimit
-        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 220); //ArmConstants.posUpperLimit); 
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 241); //ArmConstants.posUpperLimit); 
         m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
         m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        m_armMotor.enableVoltageCompensation(12.0);
         m_armMotor.setSmartCurrentLimit(20);
         m_armMotor.burnFlash();  //Remove this after everything is up and running to save flash wear
     
@@ -54,7 +56,12 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armPIDController.setI(0.0); //ArmConstants.armRotatekI);
         m_armPIDController.setD(0.0); //ArmConstants.armRotatekD);
         m_armPIDController.setIZone(0.0); //ArmConstants.armRotatekIz);
-        m_armPIDController.setFF(.000156); //ArmConstants.armRotatekFF);
+        // This is an arbitrary feedforward value that is multiplied by the positon of the arm to account
+        // for the reduction in force needed to hold the arm vertical instead of hortizontal.  The .abs
+        //ensures the value is always positive.  The .cos function uses radians instead of degrees,
+        // so the .toRadians converts from degrees to radians.
+        m_armPIDController.setFF(.00005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
+
         m_armPIDController.setOutputRange(-1.0, 1.0); //ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
     
         /**
@@ -73,12 +80,13 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armPIDController.setSmartMotionMinOutputVelocity(0.0, 0); //ArmConstants.armRotateMinVel, ArmConstants.armRotateSmartMotionSlot);
         m_armPIDController.setSmartMotionMaxAccel(3000.0,0); //ArmConstants.armRotateMaxAcc, ArmConstants.armRotateSmartMotionSlot);
         m_armPIDController.setSmartMotionAllowedClosedLoopError(0.01, 0); //ArmConstants.armRotateAllowedErr, ArmConstants.armRotateSmartMotionSlot);
-    
+    //Q: How can I ensure a multipled value always returns a positive number?
     
   }
 
 @Override
   public void periodic() {
+    SmartDashboard.putNumber("Arm Enc Val", m_armEncoder.getPosition());
     // This method will be called once per scheduler run
 
     /**

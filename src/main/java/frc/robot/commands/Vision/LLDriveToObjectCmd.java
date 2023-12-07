@@ -27,10 +27,10 @@ public class LLDriveToObjectCmd extends CommandBase
   public LLDriveToObjectCmd(SwerveSubsystem swerveSubsystem, double visionObject)
   {
     this.swerveSubsystem = swerveSubsystem;
-    yController = new PIDController(2, 0.0, 0.0);
+    yController = new PIDController(.5, 0.0, 0.0);
     yController.setTolerance(1);
     yController.setSetpoint(0.0);
-    xController = new PIDController(2, 0.0, 0.0);
+    xController = new PIDController(.5, 0.0, 0.0);
     xController.setTolerance(1);
     xController.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
@@ -69,10 +69,10 @@ public class LLDriveToObjectCmd extends CommandBase
       //double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
 
       // This is the value in meters per second that is used to drive the robot
-      double translationValy = MathUtil.clamp(yController.calculate(tx, 0.0), -2 , 2); //* throttle, 2.5 * throttle);
-      double translationValx = MathUtil.clamp(xController.calculate(ty, 0.0), -2 , 2); //* throttle, 2.5 * throttle);
+      double translationValy = MathUtil.clamp(yController.calculate(tx, 0.0), -.5 , .5); //* throttle, 2.5 * throttle);
+      double translationValx = MathUtil.clamp(xController.calculate(ty, 0.0), -.5 , .5); //* throttle, 2.5 * throttle);
       SmartDashboard.putNumber("Y Translation Value", translationValy);
-      SmartDashboard.putNumber("X Translation Value", translationValx);
+      SmartDashboard.putNumber("X Translation Value", -translationValx);
       
       swerveSubsystem.drive(new Translation2d(translationValx, translationValy), 0.0, false, false);
     }
