@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
+import frc.robot.subsystems.LimelightHelpers;
 //import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 
@@ -154,7 +155,8 @@ public class Robot extends TimedRobot
     //m_robotContainer.setDriveMode();
     //m_robotContainer.setMotorBrake(true);
     ArmRotateSubsystem.ArmRotateSetpoint = 90;
-
+    LimelightHelpers.setLEDMode_ForceOn("");
+    LimelightHelpers.setCameraMode_Processor("");
   }
 
   /**
