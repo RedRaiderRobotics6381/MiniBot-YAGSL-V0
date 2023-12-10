@@ -157,8 +157,7 @@ public class Robot extends TimedRobot
     ArmRotateSubsystem.ArmRotateSetpoint = 90;
     LimelightHelpers.setLEDMode_ForceOn("");
     LimelightHelpers.setCameraMode_Processor("");
-
-
+    LimelightHelpers.setPipelineIndex("",0);
   }
 
   /**

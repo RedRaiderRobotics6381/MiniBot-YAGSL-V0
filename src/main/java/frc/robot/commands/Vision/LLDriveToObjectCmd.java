@@ -3,7 +3,8 @@ package frc.robot.commands.Vision;
 import frc.robot.subsystems.LimelightHelpers;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Translation2d;
+//import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -27,10 +28,10 @@ public class LLDriveToObjectCmd extends CommandBase
   public LLDriveToObjectCmd(SwerveSubsystem swerveSubsystem, double visionObject)
   {
     this.swerveSubsystem = swerveSubsystem;
-    yController = new PIDController(.5, 0.0, 0.0);
+    yController = new PIDController(1, 0.0, 0.0);
     yController.setTolerance(1);
     yController.setSetpoint(0.0);
-    xController = new PIDController(.5, 0.0, 0.0);
+    xController = new PIDController(1, 0.0, 0.0);
     xController.setTolerance(1);
     xController.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
@@ -72,12 +73,14 @@ public class LLDriveToObjectCmd extends CommandBase
       double translationValy = MathUtil.clamp(yController.calculate(tx, 0.0), -.5 , .5); //* throttle, 2.5 * throttle);
       double translationValx = MathUtil.clamp(xController.calculate(ty, 0.0), -.5 , .5); //* throttle, 2.5 * throttle);
       SmartDashboard.putNumber("Y Translation Value", translationValy);
-      SmartDashboard.putNumber("X Translation Value", -translationValx);
+      SmartDashboard.putNumber("X Translation Value", translationValx);
       
-      swerveSubsystem.drive(new Translation2d(translationValx, translationValy), 0.0, false, false);
+      //swerveSubsystem.drive(new Translation2d(-translationValx, translationValy), 0.0, false, false);
+      swerveSubsystem.setChassisSpeeds(new ChassisSpeeds(translationValx, translationValy,0.0));
+
     }
     else{
-      swerveSubsystem.drive(new Translation2d(0, 0), 0.0, false, false);
+      //swerveSubsystem.drive(new Translation2d(0, 0), 0.0, false, false);
       end(true);
       }
     

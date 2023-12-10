@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmRotateSubsystem extends SubsystemBase {
   public static CANSparkMax m_armMotor;
   public static SparkMaxPIDController m_armPIDController;
-  public static SparkMaxAbsoluteEncoder m_armEncoder;
+  public static SparkMaxAbsoluteEncoder ArmEncoder;
   public static double ArmRotateSetpoint;
   public static double RotateManualPos;
   //public static double RotateManualPos;
@@ -35,24 +35,24 @@ public class ArmRotateSubsystem extends SubsystemBase {
          * parameters will not persist between power cycles
          */
         m_armMotor.restoreFactoryDefaults();  //Remove this when we remove the burnFlash() call below
-        m_armEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
-        m_armEncoder.setPositionConversionFactor(360);
-        m_armEncoder.setZeroOffset(72.5); //ArmConstants.posOffset);
+        ArmEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+        ArmEncoder.setPositionConversionFactor(360);
+        ArmEncoder.setZeroOffset(72.5); //ArmConstants.posOffset);
         //m_armEncoder.setInverted(true);
     
         // initialze PID controller and encoder objects
         m_armPIDController = m_armMotor.getPIDController();
-        m_armPIDController.setFeedbackDevice(m_armEncoder);
+        m_armPIDController.setFeedbackDevice(ArmEncoder);
         m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 85); //ArmConstants.posLowerLimit
         m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 241); //ArmConstants.posUpperLimit); 
         m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
         m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
         m_armMotor.enableVoltageCompensation(12.0);
-        m_armMotor.setSmartCurrentLimit(20);
+        m_armMotor.setSmartCurrentLimit(25);
         m_armMotor.burnFlash();  //Remove this after everything is up and running to save flash wear
     
         // set PID coefficients
-        m_armPIDController.setP(.00000024); //ArmConstants.armRotatekP);
+        m_armPIDController.setP(.000005); //ArmConstants.armRotatekP);
         m_armPIDController.setI(0.0); //ArmConstants.armRotatekI);
         m_armPIDController.setD(0.0); //ArmConstants.armRotatekD);
         m_armPIDController.setIZone(0.0); //ArmConstants.armRotatekIz);
@@ -60,8 +60,8 @@ public class ArmRotateSubsystem extends SubsystemBase {
         // for the reduction in force needed to hold the arm vertical instead of hortizontal.  The .abs
         //ensures the value is always positive.  The .cos function uses radians instead of degrees,
         // so the .toRadians converts from degrees to radians.
-        m_armPIDController.setFF(.00005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
-
+       // m_armPIDController.setFF(.00005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
+        m_armPIDController.setFF(.00005);
         m_armPIDController.setOutputRange(-1.0, 1.0); //ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
     
         /**
@@ -86,7 +86,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
 
 @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Enc Val", m_armEncoder.getPosition());
+    SmartDashboard.putNumber("Arm Enc Val", ArmEncoder.getPosition());
     // This method will be called once per scheduler run
 
     /**

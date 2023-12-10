@@ -136,15 +136,15 @@ public class RobotContainer
     //new JoystickButton(engineerXbox,7 ).whileTrue(new DriveGyro180Cmd(swerveSubsystem));
 
     new JoystickButton(driverXbox, 5).whileTrue(new LLDriveToObjectCmd(drivebase, 0));
-    new JoystickButton(driverXbox, 5).onFalse((new InstantCommand(drivebase::lock)));
+    //new JoystickButton(driverXbox, 5).onFalse((new InstantCommand(drivebase::lock)));
     new JoystickButton(driverXbox, 6).whileTrue(new LLDriveToObjectCmd(drivebase, 1));
-    new JoystickButton(driverXbox, 6).onFalse((new InstantCommand(drivebase::lock)));
+    //new JoystickButton(driverXbox, 6).onFalse((new InstantCommand(drivebase::lock)));
     //new JoystickButton(driverXbox, 5).whileTrue(new PVDriveToObjectCmd(drivebase, 3));
     //new JoystickButton(driverXbox, 6).whileTrue(new PVDriveToObjectCmd(drivebase, 1));
 
     if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
     while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-      RotateManualPos = ArmRotateSubsystem.ArmRotateSetpoint + (engineerXbox.getRightY() * 2);
+      RotateManualPos += ArmRotateSubsystem.ArmEncoder.getPosition() + (engineerXbox.getRightY() * 2);
       armRotateSubsystem.rotatePosCommand(RotateManualPos);
       }
     }
