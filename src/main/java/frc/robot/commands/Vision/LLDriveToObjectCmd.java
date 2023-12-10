@@ -3,6 +3,7 @@ package frc.robot.commands.Vision;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 //import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
@@ -31,11 +32,11 @@ public class LLDriveToObjectCmd extends CommandBase
   public LLDriveToObjectCmd(SwerveSubsystem swerveSubsystem, double visionObject)
   {
     this.swerveSubsystem = swerveSubsystem;
-    yController = new PIDController(1, 0.0, 0.0);
-    yController.setTolerance(1);
+    yController = new PIDController(3, 0.3, 0.1);
+    yController.setTolerance(.5);
     yController.setSetpoint(0.0);
-    xController = new PIDController(1, 0.0, 0.0);
-    xController.setTolerance(1);
+    xController = new PIDController(3, 0.3, 0.1);
+    xController.setTolerance(.5);
     xController.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
@@ -50,7 +51,7 @@ public class LLDriveToObjectCmd extends CommandBase
   @Override
   public void initialize()
   {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber((int)visionObject);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(visionObject);
 
 
   }
@@ -63,8 +64,8 @@ public class LLDriveToObjectCmd extends CommandBase
   public void execute()
   {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry targetX = table.getEntry("tx");
-    NetworkTableEntry targetY = table.getEntry("ty");
+    
+
     NetworkTableEntry targetValid = table.getEntry("tv"); 
     //SmartDashboard.putBoolean("At Tolerance", yController.atSetpoint());
     double tv = targetValid.getDouble(0.0);
@@ -73,19 +74,23 @@ public class LLDriveToObjectCmd extends CommandBase
     // SmartDashboard.putBoolean("TV", tv);
     if (tv == 1){
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0.25);
+      NetworkTableEntry targetX = table.getEntry("tx");
+      NetworkTableEntry targetY = table.getEntry("ty");
       double tx = targetX.getDouble(0.0);
       double ty = targetY.getDouble(0.0);
 
       //double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
 
       // This is the value in meters per second that is used to drive the robot
+
       double translationValy = MathUtil.clamp(yController.calculate(tx, 0.0), -.5 , .5); //* throttle, 2.5 * throttle);
       double translationValx = MathUtil.clamp(xController.calculate(ty, 0.0), -.5 , .5); //* throttle, 2.5 * throttle);
       SmartDashboard.putNumber("Y Translation Value", translationValy);
       SmartDashboard.putNumber("X Translation Value", translationValx);
       
       //swerveSubsystem.drive(new Translation2d(-translationValx, translationValy), 0.0, false, false);
-      swerveSubsystem.setChassisSpeeds(new ChassisSpeeds(translationValx, translationValy,0.0));
+      swerveSubsystem.setChassisSpeeds(new ChassisSpeeds(-translationValx, translationValy,0.0));
+      //swerveSubsystem.setChassisSpeeds(new ChassisSpeeds(0, translationValy,-translationValx));
 
     }
     else{

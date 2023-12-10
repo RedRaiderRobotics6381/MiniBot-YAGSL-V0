@@ -52,7 +52,7 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armMotor.burnFlash();  //Remove this after everything is up and running to save flash wear
     
         // set PID coefficients
-        m_armPIDController.setP(.000005); //ArmConstants.armRotatekP);
+        m_armPIDController.setP(0.000062); //ArmConstants.armRotatekP);
         m_armPIDController.setI(0.0); //ArmConstants.armRotatekI);
         m_armPIDController.setD(0.0); //ArmConstants.armRotatekD);
         m_armPIDController.setIZone(0.0); //ArmConstants.armRotatekIz);
@@ -61,7 +61,10 @@ public class ArmRotateSubsystem extends SubsystemBase {
         //ensures the value is always positive.  The .cos function uses radians instead of degrees,
         // so the .toRadians converts from degrees to radians.
        // m_armPIDController.setFF(.00005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
-        m_armPIDController.setFF(.00005);
+       //m_armPIDController.setFF(.005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
+       double ArmRotateSetpointRad = Math.toRadians(ArmRotateSetpoint);
+       m_armPIDController.setFF(.005 * (Math.abs(Math.cos(ArmRotateSetpointRad - (Math.toRadians(90))))));
+       //m_armPIDController.setFF(.005);
         m_armPIDController.setOutputRange(-1.0, 1.0); //ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
     
         /**
