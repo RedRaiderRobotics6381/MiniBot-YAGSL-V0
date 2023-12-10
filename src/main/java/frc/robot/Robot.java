@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
-import frc.robot.subsystems.LimelightHelpers;
 //import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
+//import edu.wpi.first.networktables.NetworkTable;
+//import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,6 +104,7 @@ public class Robot extends TimedRobot
   public void disabledInit()
   {
     m_robotContainer.setMotorBrake(true);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);//Sets limelight to LED off
     disabledTimer.reset();
     disabledTimer.start();
   }
@@ -155,9 +158,10 @@ public class Robot extends TimedRobot
     //m_robotContainer.setDriveMode();
     //m_robotContainer.setMotorBrake(true);
     ArmRotateSubsystem.ArmRotateSetpoint = 90;
-    LimelightHelpers.setLEDMode_ForceOn("");
-    LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("",0);
+
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); //Sets limelight to vision processing mode
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); //Sets limelight to LED on
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0); //Sets limelight to default pipeline
   }
 
   /**

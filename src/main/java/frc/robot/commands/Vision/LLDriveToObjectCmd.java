@@ -1,10 +1,13 @@
 package frc.robot.commands.Vision;
 
-import frc.robot.subsystems.LimelightHelpers;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -38,6 +41,7 @@ public class LLDriveToObjectCmd extends CommandBase
     // addRequirements() method (which takes a vararg of Subsystem)
     addRequirements(this.swerveSubsystem);
     this.visionObject = visionObject;
+    
   }
 
   /**
@@ -46,9 +50,9 @@ public class LLDriveToObjectCmd extends CommandBase
   @Override
   public void initialize()
   {
-    LimelightHelpers.setLEDMode_ForceOn("");
-    LimelightHelpers.setCameraMode_Processor("");
-    LimelightHelpers.setPipelineIndex("", (int)visionObject);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber((int)visionObject);
+
+
   }
 
   /**
@@ -58,14 +62,19 @@ public class LLDriveToObjectCmd extends CommandBase
   @Override
   public void execute()
   {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry targetX = table.getEntry("tx");
+    NetworkTableEntry targetY = table.getEntry("ty");
+    NetworkTableEntry targetValid = table.getEntry("tv"); 
     //SmartDashboard.putBoolean("At Tolerance", yController.atSetpoint());
-    boolean tv = LimelightHelpers.getTV("");  //tv = target visible
-    SmartDashboard.putNumber("Pipeline",LimelightHelpers.getCurrentPipelineIndex(""));
-    SmartDashboard.putBoolean("TV", tv);
-    if (tv == true){
+    double tv = targetValid.getDouble(0.0);
+
+    // SmartDashboard.putNumber("Pipeline",tv);
+    // SmartDashboard.putBoolean("TV", tv);
+    if (tv == 1){
       RobotContainer.driverXbox.setRumble(XboxController.RumbleType.kBothRumble, 0.25);
-      double tx = LimelightHelpers.getTX("");
-      double ty = LimelightHelpers.getTY("");
+      double tx = targetX.getDouble(0.0);
+      double ty = targetY.getDouble(0.0);
 
       //double throttle = RobotContainer.driverXbox.getLeftTriggerAxis();
 
