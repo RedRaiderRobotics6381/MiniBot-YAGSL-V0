@@ -9,6 +9,7 @@ package frc.robot;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import swervelib.math.Matter;
 import swervelib.parser.PIDFConfig;
 
@@ -59,34 +60,34 @@ public final class Constants
        public static final int kManipulatorIntakeMotorR = 15;
        public static final int kMotorPort = 4;
 
-       public static final double kP = 1;
+       //public static final double kP = 1;
    
        // These are fake gains; in actuality these must be determined individually for each robot
-       public static final double kSVolts = 1;
-       public static final double kGVolts = 1;
-       public static final double kVVoltSecondPerRad = 0.5;
-       public static final double kAVoltSecondSquaredPerRad = 0.1;
+       //public static final double kSVolts = 1;
+       //public static final double kGVolts = 1;
+       //public static final double kVVoltSecondPerRad = 0.5;
+       //public static final double kAVoltSecondSquaredPerRad = 0.1;
    
-       public static final double kMaxVelocityRadPerSecond = 3;
-       public static final double kMaxAccelerationRadPerSecSquared = 10;
+       //public static final double kMaxVelocityRadPerSecond = 3;
+       //public static final double kMaxAccelerationRadPerSecSquared = 10;
    
-       public static final int[] kEncoderPorts = new int[] {4, 5};
-       public static final int kEncoderPPR = 256;
-       public static final double kEncoderDistancePerPulse = 2.0 * Math.PI / kEncoderPPR;
+       //public static final int[] kEncoderPorts = new int[] {4, 5};
+       //public static final int kEncoderPPR = 256;
+       //public static final double kEncoderDistancePerPulse = 2.0 * Math.PI / kEncoderPPR;
    
        // The offset of the arm from the horizontal in its neutral position,
        // measured from the horizontal
-       public static final double kArmOffset = 0.5;
+       //public static final double kArmOffset = 0.5;
 
        public static final double gOutputSpeed = 1.00;
        public static final double gIntakeSpeed = 0.50;
-       public static final double rotateoffset = Math.toRadians(2.5);
+       //public static final double rotateoffset = Math.toRadians(2.5);
        public static final double posOffset = 72.5;
        public static final double posDrive = 190; //Was 200 see note in ArmRotateSubsystem.java
        public static final double posIntake = 90; //Was 132.5 see note in ArmRotateSubsystem.java
-       public static final double posDriveGravity = 0.01;
-       public static final double posIntakeGravity = 0.03;
-       public static final double rotateSpeed = 1;
+       //public static final double posDriveGravity = 0.01;
+       //public static final double posIntakeGravity = 0.03;
+       //public static final double rotateSpeed = 1;
 
        public static final double armRotatekP = .00000024;
        public static final double armRotatekI = .000000;
@@ -104,6 +105,29 @@ public final class Constants
  
        public static boolean manipulatorOn = false;
        public static boolean manipulatorManual = false;
+
+       //Simulation
+       //public static final int kMotorPort = 0;
+       public static final int kEncoderAChannel = 0;
+       public static final int kEncoderBChannel = 1;
+       public static final String kArmPositionKey = "ArmPosition";
+       public static final String kArmPKey = "ArmP";
+     
+       // The P gain for the PID controller that drives this arm.
+       public static final double kDefaultArmKp = armRotatekP; //50.0;
+       public static final double kDefaultArmSetpointDegrees = posIntake; //100.0;
+       public static final double kArmSetpoint = ArmRotateSubsystem.ArmRotateSetpoint; //100;
+     
+       // distance per pulse = (angle per revolution) / (pulses per revolution)
+       //  = (2 * PI rads) / (4096 pulses)
+       public static final double kArmEncoderDistPerPulse = 2.0 * Math.PI / 8192;
+     
+       public static final double kArmReduction = 125;
+       public static final double kArmMass = 4.536; // Kilograms = 10lbs
+       public static final double kArmLength = Units.inchesToMeters(10);
+       public static final double kMinAngleRads = Units.degreesToRadians(0);
+       public static final double kMaxAngleRads = Units.degreesToRadians(240);
+       //
   
       //  uncertain
       //  public static final int gArmSliderBottom = 1;
@@ -131,11 +155,11 @@ public final class Constants
       //  public static int rightYPort = 5;
   }
   
-  public static final class SensorConstants {
-    public static PIDController PIDspeed = new PIDController(0.20, 0, 0);
-    public static PIDController PIDside = new PIDController(0.06, 0, 0);
-    public static PIDController PIDturn = new PIDController(0.005, 0, 0);
-    public static PIDController PIDcharging = new PIDController(0.05, 0, 0);
-  }
+  //public static final class SensorConstants {
+    //public static PIDController PIDspeed = new PIDController(0.20, 0, 0);
+    //public static PIDController PIDside = new PIDController(0.06, 0, 0);
+    //public static PIDController PIDturn = new PIDController(0.005, 0, 0);
+    //public static PIDController PIDcharging = new PIDController(0.05, 0, 0);
+  //}
 
 }

@@ -9,8 +9,26 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,12 +38,61 @@ public class ArmRotateSubsystem extends SubsystemBase {
   public static SparkMaxAbsoluteEncoder m_armEncoder;
   public static double ArmRotateSetpoint;
   public static double RotateManualPos;
+  
+  // The P gain for the PID controller that drives this arm.
+  private double m_armKp = ArmConstants.kDefaultArmKp;
+  private double m_armSetpointDegrees = ArmConstants.kDefaultArmSetpointDegrees;
+
+  // The arm gearbox represents a gearbox containing one Neo motor.
+  private final DCMotor m_armGearbox = DCMotor.getNEO(1);
+  private final Encoder m_encoder =
+  new Encoder(ArmConstants.kEncoderAChannel, ArmConstants.kEncoderBChannel);
+  private final PIDController m_controller = new PIDController(m_armKp, 0, 0);
+  
+  // Simulation classes help us simulate what's going on, including gravity.
+  // This arm sim represents an arm that can travel from 90 degrees (rotated down front)
+  // to 190 degrees (rotated up).
+  private final SingleJointedArmSim m_armSim =
+      new SingleJointedArmSim(
+          m_armGearbox,
+          ArmConstants.kArmReduction,
+          SingleJointedArmSim.estimateMOI(ArmConstants.kArmLength, ArmConstants.kArmMass),
+          ArmConstants.kArmLength,
+          ArmConstants.kMinAngleRads,
+          ArmConstants.kMaxAngleRads,
+          true,
+          VecBuilder.fill(ArmConstants.kArmEncoderDistPerPulse) // Add noise with a std-dev of 1 tick
+          );
+  private final EncoderSim m_encoderSim = new EncoderSim(m_encoder);
+
+  // Create a Mechanism2d display of an Arm with a fixed ArmTower and moving Arm.
+  private final Mechanism2d m_mech2d = new Mechanism2d(60, 60);
+  private final MechanismRoot2d m_armPivot = m_mech2d.getRoot("ArmPivot", 30, 30);
+  private final MechanismLigament2d m_armTower =
+      m_armPivot.append(new MechanismLigament2d("ArmTower", 10, -90));
+  private final MechanismLigament2d m_arm =
+      m_armPivot.append(
+          new MechanismLigament2d(
+              "Arm",
+              30,
+              Units.radiansToDegrees(m_armSim.getAngleRads()),
+              6,
+              new Color8Bit(Color.kYellow)));
   //public static double RotateManualPos;
   /** Creates a new ArmRotateSubSys. 
  * @param armRotateSubsystem*/
   public ArmRotateSubsystem() {
         // initialize motor
         m_armMotor = new CANSparkMax(ArmConstants.kArmRotateMotor, MotorType.kBrushless);
+        m_encoder.setDistancePerPulse(ArmConstants.kArmEncoderDistPerPulse); //for simulation
+        
+        // Put Mechanism 2d to SmartDashboard
+        SmartDashboard.putData("Arm Sim", m_mech2d);
+        m_armTower.setColor(new Color8Bit(Color.kBlue));
+
+        // Set the Arm position setpoint and P constant to Preferences if the keys don't already exist
+        Preferences.initDouble(ArmConstants.kArmPositionKey, m_armSetpointDegrees);
+        Preferences.initDouble(ArmConstants.kArmPKey, m_armKp);
 
         /**
          * The RestoreFactoryDefaults method can be used to reset the configuration parameters
@@ -102,4 +169,32 @@ public class ArmRotateSubsystem extends SubsystemBase {
   //   // implicitly require `this`
   //   return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
   // }
+  /** Update the simulation model. */
+  public void simulationPeriodic() {
+    // In this method, we update our simulation of what our arm is doing
+    // First, we set our "inputs" (voltages)
+    m_armSim.setInput(m_armMotor.get() * RobotController.getBatteryVoltage());
+
+    // Next, we update it. The standard loop time is 20ms.
+    m_armSim.update(0.020);
+
+    // Finally, we set our simulated encoder's readings and simulated battery voltage
+    m_encoderSim.setDistance(m_armSim.getAngleRads());
+    // SimBattery estimates loaded battery voltages
+    RoboRioSim.setVInVoltage(
+        BatterySim.calculateDefaultBatteryLoadedVoltage(m_armSim.getCurrentDrawAmps()));
+
+    // Update the Mechanism Arm angle based on the simulated arm angle
+    m_arm.setAngle(Units.radiansToDegrees(m_armSim.getAngleRads()));
+  }
+
+  /** Load setpoint and kP from preferences. */
+  public void loadPreferences() {
+    // Read Preferences for Arm setpoint and kP on entering Teleop
+    m_armSetpointDegrees = Preferences.getDouble(ArmConstants.kArmPositionKey, m_armSetpointDegrees);
+    if (m_armKp != Preferences.getDouble(ArmConstants.kArmPKey, m_armKp)) {
+      m_armKp = Preferences.getDouble(ArmConstants.kArmPKey, m_armKp);
+      m_controller.setP(m_armKp);
+    }
+  }
 }
