@@ -9,8 +9,8 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
+//import frc.robot.Constants;
+//import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
@@ -196,4 +196,41 @@ public class ArmRotateSubsystem extends SubsystemBase {
   //   // implicitly require `this`
   //   return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
   // }
+    /** Update the simulation model. */
+    public void simulationPeriodic() {
+      // In this method, we update our simulation of what our arm is doing
+      // First, we set our "inputs" (voltages)
+      m_armSim.setInput(m_armMotor.get() * RobotController.getBatteryVoltage());
+  
+      // Next, we update it. The standard loop time is 20ms.
+      m_armSim.update(0.020);
+  
+      // Finally, we set our simulated encoder's readings and simulated battery voltage
+      m_encoderSim.setDistance(m_armSim.getAngleRads());
+      // SimBattery estimates loaded battery voltages
+      RoboRioSim.setVInVoltage(
+          BatterySim.calculateDefaultBatteryLoadedVoltage(m_armSim.getCurrentDrawAmps()));
+  
+      // Update the Mechanism Arm angle based on the simulated arm angle
+      m_arm.setAngle(Units.radiansToDegrees(m_armSim.getAngleRads()));
+    }
+  
+    /** Load setpoint and kP from preferences. */
+    public void loadPreferences() {
+      // Read Preferences for Arm setpoint and kP on entering Teleop
+      m_armSetpointDegrees = Preferences.getDouble(ArmConstants.kArmPositionKey, m_armSetpointDegrees);
+      if (m_armKp != Preferences.getDouble(ArmConstants.kArmPKey, m_armKp)) {
+        m_armKp = Preferences.getDouble(ArmConstants.kArmPKey, m_armKp);
+        m_controller.setP(m_armKp);
+      }
+    }
+  
+    /** Run the control loop to reach and maintain the setpoint from the preferences. */
+    public void reachSetpoint(double kArmSetpoint) {
+      var pidOutput =
+          m_controller.calculate(
+              m_encoder.getDistance(), Units.degreesToRadians(kArmSetpoint));
+          m_armMotor.setVoltage(pidOutput);
+    }
+  
 }
