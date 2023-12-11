@@ -32,11 +32,11 @@ public class LLDriveToObjectCmd extends CommandBase
   public LLDriveToObjectCmd(SwerveSubsystem swerveSubsystem, double visionObject)
   {
     this.swerveSubsystem = swerveSubsystem;
-    yController = new PIDController(3, 0.3, 0.1);
+    yController = new PIDController(3, 0.3, 0.0);
+    xController = new PIDController(1, 0.1, 0.0);
     yController.setTolerance(.5);
-    yController.setSetpoint(0.0);
-    xController = new PIDController(3, 0.3, 0.1);
     xController.setTolerance(.5);
+    yController.setSetpoint(0.0);
     xController.setSetpoint(0.0);
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)

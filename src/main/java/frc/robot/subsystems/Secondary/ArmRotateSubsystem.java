@@ -90,20 +90,8 @@ public class ArmRotateSubsystem extends SubsystemBase {
 
 @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Enc Val", ArmEncoder.getPosition());
     // This method will be called once per scheduler run
-
-    /**
-     * As with other PID modes, Smart Motion is set by calling the
-      * setReference method on an existing pid object and setting
-      * the control type to kSmartMotion
-    */
-    // while(RobotContainer.engineerXbox.getRawAxis(1) > 0.1 || RobotContainer.engineerXbox.getRawAxis(1) < -0.1){
-    //   if (m_armEncoder.getPosition() * 360 > ArmConstants.posDrive && m_armEncoder.getPosition() * 360 < ArmConstants.posIntake) {
-    //     ArmRotateSetpoint = ArmRotateSetpoint + 1 * RobotContainer.engineerXbox.getRawAxis(1);
-    //     }
-    //   }
-    //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+    SmartDashboard.putNumber("Arm Enc Val", ArmEncoder.getPosition());
   }
 
 
@@ -113,24 +101,9 @@ public class ArmRotateSubsystem extends SubsystemBase {
     return this.run(() -> m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion));
   }
   
-  // public void rotateDriveCommand() {
-  //   // implicitly require `this`
-  //   // return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
-  //   //return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive);
-  //   ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive;
-  //   //m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion);
 
-  // }
-  // public void rotateIntakeCommand() {
-  //   // implicitly require `this`
-  //   //return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
-  //   //return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake);
-  //   ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake;
-  //   //m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion);
-  // }
-  // public CommandBase rotateManualCommand() {
-  //   // implicitly require `this`
-  //   return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
-  // }
+  public void setDefaultCommand(){
+    m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
+  }
   
 }
