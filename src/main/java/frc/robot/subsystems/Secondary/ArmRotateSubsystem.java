@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmRotateSubsystem extends SubsystemBase {
   public static CANSparkMax m_armMotor;
   public static SparkMaxPIDController m_armPIDController;
-  public static SparkMaxAbsoluteEncoder m_armEncoder;
+  public static SparkMaxAbsoluteEncoder ArmEncoder;
   public static double ArmRotateSetpoint;
   public static double RotateManualPos;
   
@@ -100,23 +100,37 @@ public class ArmRotateSubsystem extends SubsystemBase {
          * parameters will not persist between power cycles
          */
         m_armMotor.restoreFactoryDefaults();  //Remove this when we remove the burnFlash() call below
-        m_armEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
-        m_armEncoder.setPositionConversionFactor(360);
-        m_armEncoder.setZeroOffset(ArmConstants.posOffset);
+        ArmEncoder = m_armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+        ArmEncoder.setPositionConversionFactor(360);
+        ArmEncoder.setZeroOffset(72.5); //ArmConstants.posOffset);
         //m_armEncoder.setInverted(true);
     
         // initialze PID controller and encoder objects
         m_armPIDController = m_armMotor.getPIDController();
-        m_armPIDController.setFeedbackDevice(m_armEncoder);
+        m_armPIDController.setFeedbackDevice(ArmEncoder);
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 85); //ArmConstants.posLowerLimit
+        m_armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 241); //ArmConstants.posUpperLimit); 
+        m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+        m_armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        m_armMotor.enableVoltageCompensation(12.0);
+        m_armMotor.setSmartCurrentLimit(25);
         m_armMotor.burnFlash();  //Remove this after everything is up and running to save flash wear
     
         // set PID coefficients
-        m_armPIDController.setP(ArmConstants.armRotatekP);
-        m_armPIDController.setI(ArmConstants.armRotatekI);
-        m_armPIDController.setD(ArmConstants.armRotatekD);
-        m_armPIDController.setIZone(ArmConstants.armRotatekIz);
-        m_armPIDController.setFF(ArmConstants.armRotatekFF);
-        m_armPIDController.setOutputRange(ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
+        m_armPIDController.setP(0.000062); //ArmConstants.armRotatekP);
+        m_armPIDController.setI(0.0); //ArmConstants.armRotatekI);
+        m_armPIDController.setD(0.0); //ArmConstants.armRotatekD);
+        m_armPIDController.setIZone(0.0); //ArmConstants.armRotatekIz);
+        // This is an arbitrary feedforward value that is multiplied by the positon of the arm to account
+        // for the reduction in force needed to hold the arm vertical instead of hortizontal.  The .abs
+        //ensures the value is always positive.  The .cos function uses radians instead of degrees,
+        // so the .toRadians converts from degrees to radians.
+       // m_armPIDController.setFF(.00005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
+       //m_armPIDController.setFF(.005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
+       double ArmRotateSetpointRad = Math.toRadians(ArmRotateSetpoint);
+       m_armPIDController.setFF(.005 * (Math.abs(Math.cos(ArmRotateSetpointRad - (Math.toRadians(90))))));
+       //m_armPIDController.setFF(.005);
+        m_armPIDController.setOutputRange(-1.0, 1.0); //ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
     
         /**
          * Smart Motion coefficients are set on a SparkMaxPIDController object
@@ -130,16 +144,17 @@ public class ArmRotateSubsystem extends SubsystemBase {
          * - setSmartMotionAllowedClosedLoopError() will set the max allowed
          * error for the pid controller in Smart Motion mode
          */
-        m_armPIDController.setSmartMotionMaxVelocity(ArmConstants.armRotateMaxVel, ArmConstants.armRotateSmartMotionSlot);
-        m_armPIDController.setSmartMotionMinOutputVelocity(ArmConstants.armRotateMinVel, ArmConstants.armRotateSmartMotionSlot);
-        m_armPIDController.setSmartMotionMaxAccel(ArmConstants.armRotateMaxAcc, ArmConstants.armRotateSmartMotionSlot);
-        m_armPIDController.setSmartMotionAllowedClosedLoopError(ArmConstants.armRotateAllowedErr, ArmConstants.armRotateSmartMotionSlot);
-    
+        m_armPIDController.setSmartMotionMaxVelocity(5000.0,0); //ArmConstants.armRotateMaxVel, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionMinOutputVelocity(0.0, 0); //ArmConstants.armRotateMinVel, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionMaxAccel(3000.0,0); //ArmConstants.armRotateMaxAcc, ArmConstants.armRotateSmartMotionSlot);
+        m_armPIDController.setSmartMotionAllowedClosedLoopError(0.01, 0); //ArmConstants.armRotateAllowedErr, ArmConstants.armRotateSmartMotionSlot);
+    //Q: How can I ensure a multipled value always returns a positive number?
     
   }
 
 @Override
   public void periodic() {
+    SmartDashboard.putNumber("Arm Enc Val", ArmEncoder.getPosition());
     // This method will be called once per scheduler run
 
     /**
@@ -154,47 +169,31 @@ public class ArmRotateSubsystem extends SubsystemBase {
     //   }
     //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
   }
-  public CommandBase rotateDriveCommand() {
-    // implicitly require `this`
-    // return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
-    return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive);
 
-  }
-  public CommandBase rotateIntakeCommand() {
+
+  
+  public CommandBase rotatePosCommand(double ArmRotateSetpoint) {
     // implicitly require `this`
-    //return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
-    return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake);
+    return this.run(() -> m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion));
   }
+  
+  // public void rotateDriveCommand() {
+  //   // implicitly require `this`
+  //   // return this.run(() -> m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion));
+  //   //return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive);
+  //   ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posDrive;
+  //   //m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion);
+
+  // }
+  // public void rotateIntakeCommand() {
+  //   // implicitly require `this`
+  //   //return this.run(() -> m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion));
+  //   //return this.runOnce(() -> ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake);
+  //   ArmRotateSubsystem.ArmRotateSetpoint =  ArmConstants.posIntake;
+  //   //m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion);
+  // }
   // public CommandBase rotateManualCommand() {
   //   // implicitly require `this`
   //   return this.runOnce(() -> m_armPIDController.setReference(RobotContainer.RotateManualPos, CANSparkMax.ControlType.kSmartMotion));
   // }
-  /** Update the simulation model. */
-  public void simulationPeriodic() {
-    // In this method, we update our simulation of what our arm is doing
-    // First, we set our "inputs" (voltages)
-    m_armSim.setInput(m_armMotor.get() * RobotController.getBatteryVoltage());
-
-    // Next, we update it. The standard loop time is 20ms.
-    m_armSim.update(0.020);
-
-    // Finally, we set our simulated encoder's readings and simulated battery voltage
-    m_encoderSim.setDistance(m_armSim.getAngleRads());
-    // SimBattery estimates loaded battery voltages
-    RoboRioSim.setVInVoltage(
-        BatterySim.calculateDefaultBatteryLoadedVoltage(m_armSim.getCurrentDrawAmps()));
-
-    // Update the Mechanism Arm angle based on the simulated arm angle
-    m_arm.setAngle(Units.radiansToDegrees(m_armSim.getAngleRads()));
-  }
-
-  /** Load setpoint and kP from preferences. */
-  public void loadPreferences() {
-    // Read Preferences for Arm setpoint and kP on entering Teleop
-    m_armSetpointDegrees = Preferences.getDouble(ArmConstants.kArmPositionKey, m_armSetpointDegrees);
-    if (m_armKp != Preferences.getDouble(ArmConstants.kArmPKey, m_armKp)) {
-      m_armKp = Preferences.getDouble(ArmConstants.kArmPKey, m_armKp);
-      m_controller.setP(m_armKp);
-    }
-  }
 }
