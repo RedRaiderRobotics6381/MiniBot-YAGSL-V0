@@ -3,19 +3,14 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-//import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-//import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import frc.robot.Constants.ArmConstants;
-//import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
-//import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 //import edu.wpi.first.networktables.NetworkTable;
 //import edu.wpi.first.networktables.NetworkTableEntry;
@@ -25,8 +20,6 @@ import java.io.File;
 import java.io.IOException;
 
 import com.revrobotics.CANSparkMax;
-
-// import javax.swing.plaf.TreeUI;
 
 import swervelib.parser.SwerveParser;
 
@@ -41,14 +34,12 @@ public class Robot extends TimedRobot
   public static double RotateManualCurPos;
   public static double RotateManualInput;
 
-  //private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
-  private static Robot   instance;
-  private        Command m_autonomousCommand;
+  private static Robot instance;
+  private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
   public static boolean ManualRotation= true;
-  //private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
 
   private Timer disabledTimer;
   double targetPos = 150;
@@ -77,11 +68,13 @@ public class Robot extends TimedRobot
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
     Autos.init();
+
     // Make sure you only configure port forwarding once in your robot code.
     // Do not place these function calls in any periodic functions
     // for (int port = 5800; port <= 5807; port++) {
     //     PortForwarder.add(port, "limelight.local", port);
     //   }
+
     DriverStation.silenceJoystickConnectionWarning(true); // Disable joystick connection warning
   }
 
@@ -174,30 +167,11 @@ public class Robot extends TimedRobot
    */
   @Override
   public void teleopPeriodic(){
-    //ArmRotateSubsystem.m_armPIDController.setReference(ArmRotateSubsystem.ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
-  // SmartDashboard.putNumber("Arm Position", OldArmRotateSubsystem.armRotateEncoder.getPosition());
-  //    if(ManualRotation){
-  //     if(OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posIntake){
-  //       if(RobotContainer.engineerXbox.getRawAxis(1) > 0.05){
-  //         OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-  //         }else OldArmRotateSubsystem.armRotateMotor.set(0);
-  //       }
-  //         else OldArmRotateSubsystem.armRotateMotor.set(0);
-  //      if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posDrive-5){
-  //       if(RobotContainer.engineerXbox.getRawAxis(1) < -0.05){
-  //         OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-  //         }else OldArmRotateSubsystem.armRotateMotor.set(0);
-  //       }
-  //     if(OldArmRotateSubsystem.armRotateEncoder.getPosition() > ArmConstants.posIntake &&
-  //        OldArmRotateSubsystem.armRotateEncoder.getPosition() < ArmConstants.posDrive){
-  //          OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
-  //        }
-  //     }
       if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
         //while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
           ArmRotateSubsystem.m_armPIDController.setReference((ArmRotateSubsystem.ArmEncoder.getPosition()) +
                                                              (RobotContainer.engineerXbox.getRightY() * 20),
-                                                             CANSparkMax.ControlType.kSmartMotion);
+                                                             CANSparkMax.ControlType.kSmartMotion);                                                   
         //}
     }
   }

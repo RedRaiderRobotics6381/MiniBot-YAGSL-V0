@@ -58,15 +58,16 @@ public class ArmRotateSubsystem extends SubsystemBase {
         m_armPIDController.setI(0.0); //ArmConstants.armRotatekI);
         m_armPIDController.setD(0.0); //ArmConstants.armRotatekD);
         m_armPIDController.setIZone(0.0); //ArmConstants.armRotatekIz);
+        
         // This is an arbitrary feedforward value that is multiplied by the positon of the arm to account
         // for the reduction in force needed to hold the arm vertical instead of hortizontal.  The .abs
         //ensures the value is always positive.  The .cos function uses radians instead of degrees,
         // so the .toRadians converts from degrees to radians.
-        // m_armPIDController.setFF(.00005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
-        //m_armPIDController.setFF(.005 * (Math.abs(Math.cos(Math.toRadians(ArmRotateSetpoint-90)))));
-        double ArmRotateSetpointRad = Math.toRadians(ArmRotateSetpoint);
-        m_armPIDController.setFF(.005 * (Math.abs(Math.cos(ArmRotateSetpointRad - (Math.toRadians(90))))));
-        //m_armPIDController.setFF(.005);
+        m_armPIDController.setFF(.005 * (Math.abs
+                                        (Math.cos
+                                        ((Math.toRadians(ArmRotateSetpoint)) -
+                                        (Math.toRadians(90))))));
+        
         m_armPIDController.setOutputRange(-1.0, 1.0); //ArmConstants.armRotatekMinOutput, ArmConstants.armRotatekMaxOutput);
     
         /**
@@ -91,13 +92,6 @@ public class ArmRotateSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm Enc Val", ArmEncoder.getPosition());
-    //m_armPIDController.setReference(ArmRotateSetpoint, CANSparkMax.ControlType.kSmartMotion);
-    // while(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
-    //   //while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-    //     RotateManualPos += ArmRotateSubsystem.ArmEncoder.getPosition() + (RobotContainer.engineerXbox.getRightY() * 5);
-    //     rotatePosCommand(RotateManualPos);
-    //     //}
-    //   }
   }
 
 

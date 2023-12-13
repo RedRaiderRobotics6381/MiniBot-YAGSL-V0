@@ -11,19 +11,12 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-//import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
-//import frc.robot.commands.Arm.Rotate.ArmPosition;
-//import frc.robot.commands.Arm.Rotate.ArmRotateToDrivePosCmd;
-//import frc.robot.commands.Arm.Rotate.ArmRotateToIntakePos;
-//import frc.robot.commands.Arm.Rotate.ArmRotateCmd;
-//import frc.robot.commands.Vision.DriveToObject;
 import frc.robot.commands.Vision.LLDriveToObjectCmd;
 //import frc.robot.commands.Vision.PVDriveToObjectCmd;
 import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
@@ -33,8 +26,6 @@ import frc.robot.commands.swervedrive.auto.Autos;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
-//import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
-//import frc.robot.subsystems.Secondary.NewArmRotateSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 
@@ -147,24 +138,15 @@ public class RobotContainer
 
     new JoystickButton(engineerXbox,3 ).whileTrue(new ArmIntakeInCmd(armIntakeSubsystem));
     new JoystickButton(engineerXbox,2 ).whileTrue(new ArmIntakeOutCmd(armIntakeSubsystem));
-    
-    
 
     //new JoystickButton(engineerXbox,7 ).whileTrue(new DriveGyro180Cmd(swerveSubsystem));
 
     new JoystickButton(driverXbox, 5).whileTrue(new LLDriveToObjectCmd(drivebase, 0));
-    //new JoystickButton(driverXbox, 5).onFalse((new InstantCommand(drivebase::lock)));
     new JoystickButton(driverXbox, 6).whileTrue(new LLDriveToObjectCmd(drivebase, 1));
     //new JoystickButton(driverXbox, 6).onFalse((new InstantCommand(drivebase::lock)));
     //new JoystickButton(driverXbox, 5).whileTrue(new PVDriveToObjectCmd(drivebase, 3));
     //new JoystickButton(driverXbox, 6).whileTrue(new PVDriveToObjectCmd(drivebase, 1));
 
-    // while(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
-    // //while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-    //   RotateManualPos += ArmRotateSubsystem.ArmEncoder.getPosition() + (engineerXbox.getRightY() * 5);
-    //   armRotateSubsystem.rotatePosCommand(RotateManualPos);
-    //   //}
-    // }
 }
 
   /**
