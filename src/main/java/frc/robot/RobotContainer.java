@@ -159,12 +159,12 @@ public class RobotContainer
     //new JoystickButton(driverXbox, 5).whileTrue(new PVDriveToObjectCmd(drivebase, 3));
     //new JoystickButton(driverXbox, 6).whileTrue(new PVDriveToObjectCmd(drivebase, 1));
 
-    while(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
-    //while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
-      RotateManualPos += ArmRotateSubsystem.ArmEncoder.getPosition() + (engineerXbox.getRightY() * 5);
-      armRotateSubsystem.rotatePosCommand(RotateManualPos);
-      //}
-    }
+    // while(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
+    // //while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
+    //   RotateManualPos += ArmRotateSubsystem.ArmEncoder.getPosition() + (engineerXbox.getRightY() * 5);
+    //   armRotateSubsystem.rotatePosCommand(RotateManualPos);
+    //   //}
+    // }
 }
 
   /**

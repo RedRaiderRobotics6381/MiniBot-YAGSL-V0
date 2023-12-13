@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.Constants.ArmConstants;
+//import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.swervedrive.auto.Autos;
 //import frc.robot.subsystems.Secondary.OldArmRotateSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
@@ -23,7 +24,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import java.io.File;
 import java.io.IOException;
 
-//import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax;
 
 // import javax.swing.plaf.TreeUI;
 
@@ -36,7 +37,11 @@ import swervelib.parser.SwerveParser;
  */
 public class Robot extends TimedRobot
 {
+  public static double RotateManualPos;
+  public static double RotateManualCurPos;
+  public static double RotateManualInput;
 
+  //private final ArmRotateSubsystem armRotateSubsystem = new ArmRotateSubsystem();
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
@@ -188,6 +193,13 @@ public class Robot extends TimedRobot
   //          OldArmRotateSubsystem.armRotateMotor.set(RobotContainer.engineerXbox.getRawAxis(1)*0.25);
   //        }
   //     }
+      if(RobotContainer.engineerXbox.getRightY() > 0.1 || RobotContainer.engineerXbox.getRightY() < -0.1){
+        //while (ArmRotateSubsystem.ArmRotateSetpoint < ArmConstants.posDrive && ArmRotateSubsystem.ArmRotateSetpoint > ArmConstants.posIntake){
+          ArmRotateSubsystem.m_armPIDController.setReference((ArmRotateSubsystem.ArmEncoder.getPosition()) +
+                                                             (RobotContainer.engineerXbox.getRightY() * 20),
+                                                             CANSparkMax.ControlType.kSmartMotion);
+        //}
+    }
   }
 
   @Override
