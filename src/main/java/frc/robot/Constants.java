@@ -60,34 +60,12 @@ public final class Constants
        public static final int kManipulatorIntakeMotorR = 15;
        public static final int kMotorPort = 4;
 
-       //public static final double kP = 1;
-   
-       // These are fake gains; in actuality these must be determined individually for each robot
-       //public static final double kSVolts = 1;
-       //public static final double kGVolts = 1;
-       //public static final double kVVoltSecondPerRad = 0.5;
-       //public static final double kAVoltSecondSquaredPerRad = 0.1;
-   
-       //public static final double kMaxVelocityRadPerSecond = 3;
-       //public static final double kMaxAccelerationRadPerSecSquared = 10;
-   
-       //public static final int[] kEncoderPorts = new int[] {4, 5};
-       //public static final int kEncoderPPR = 256;
-       //public static final double kEncoderDistancePerPulse = 2.0 * Math.PI / kEncoderPPR;
-   
-       // The offset of the arm from the horizontal in its neutral position,
-       // measured from the horizontal
-       //public static final double kArmOffset = 0.5;
 
        public static final double gOutputSpeed = 1.00;
        public static final double gIntakeSpeed = 0.50;
-       //public static final double rotateoffset = Math.toRadians(2.5);
        public static final double posOffset = 72.5;
        public static final double posDrive = 190; //Was 200 see note in ArmRotateSubsystem.java
        public static final double posIntake = 90; //Was 132.5 see note in ArmRotateSubsystem.java
-       //public static final double posDriveGravity = 0.01;
-       //public static final double posIntakeGravity = 0.03;
-       //public static final double rotateSpeed = 1;
 
        public static final double armRotatekP = .00000024;
        public static final double armRotatekI = .000000;
@@ -119,7 +97,7 @@ public final class Constants
        public static final double kArmSetpoint = ArmRotateSubsystem.ArmRotateSetpoint; //100;
      
        // distance per pulse = (angle per revolution) / (pulses per revolution)
-       //  = (2 * PI rads) / (4096 pulses)
+       //  = (2 * PI rads) / (8192 pulses)
        public static final double kArmEncoderDistPerPulse = 2.0 * Math.PI / 8192;
      
        public static final double kArmReduction = 125;
@@ -127,39 +105,5 @@ public final class Constants
        public static final double kArmLength = Units.inchesToMeters(10);
        public static final double kMinAngleRads = Units.degreesToRadians(0);
        public static final double kMaxAngleRads = Units.degreesToRadians(240);
-       //
-  
-      //  uncertain
-      //  public static final int gArmSliderBottom = 1;
-      //  public static final int gArmSliderTop = 41;
-      //  public static final int gArmSliderLow = 22;
-      //  public static final int gArmSliderHumanPlayer = 41;
-      //  public static final double gArmOffset = 1;
-      //  public static final double gRotateoffset = 0.25;
-      //  public static final double gSliderSpeed = -0.6;
-      //  public static final double gSliderDown = -0.4;
-      //  public static final double gRotateSpeed = 0.85;
-      //  public static final double posDoubleHuman = 100;
-      //  public static final double posPlace = 117;
-      //  Single human player station
-      //  public static final double posSingularHuman = 125; //Match 24, was at 130
-      //  Hybrid Node on front
-      //  public static final double posHybrid = 70;
-       
-      //  public static final double posDoubleHumanGravity = 0.03;
-      //  public static final double posPlaceGravity = 0.03;
-      //  public static final double posSingularHumanGravity = 0.02;
-      //  public static final double posHybridGravity = 0.04;
-      //  public static final double restriction1 = 70;
-      //  public static final double restriction2 = 291;
-      //  public static int rightYPort = 5;
   }
-  
-  //public static final class SensorConstants {
-    //public static PIDController PIDspeed = new PIDController(0.20, 0, 0);
-    //public static PIDController PIDside = new PIDController(0.06, 0, 0);
-    //public static PIDController PIDturn = new PIDController(0.005, 0, 0);
-    //public static PIDController PIDcharging = new PIDController(0.05, 0, 0);
-  //}
-
 }
