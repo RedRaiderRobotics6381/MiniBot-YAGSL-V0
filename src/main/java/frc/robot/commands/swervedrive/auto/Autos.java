@@ -10,6 +10,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,9 +23,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+//import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+//import edu.wpi.first.wpilibj2.command.Subsystem;
+//import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.Auton;
+import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +81,9 @@ public final class Autos
       // This is just an example event map. It would be better to have a constant, global event map
       // in your code that will be used by all path following commands.
       HashMap<String, Command> eventMap = new HashMap<>();
-      eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+      //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+      eventMap.put("ArmDown", new InstantCommand(() -> ArmRotateSubsystem.m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion)));
+      eventMap.put("ArmUp", new InstantCommand(() -> ArmRotateSubsystem.m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion)));
 
       // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want
       // to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
