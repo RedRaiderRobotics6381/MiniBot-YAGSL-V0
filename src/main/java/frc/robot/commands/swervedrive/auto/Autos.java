@@ -25,10 +25,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 //import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+//import frc.robot.Constants;
 //import edu.wpi.first.wpilibj2.command.Subsystem;
 //import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.Auton;
+//import frc.robot.commands.Arm.Intake.ArmIntakeInCmd;
+//import frc.robot.subsystems.Secondary.ArmIntakeSubsystem;
 import frc.robot.subsystems.Secondary.ArmRotateSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.util.HashMap;
@@ -42,6 +45,7 @@ public final class Autos
    */
   private static AprilTagFieldLayout aprilTagField = null;
   public static final SendableChooser<String> autoChooser = new SendableChooser<>();
+
     // create a string variable that will pass the autopathname to the code
   public static String autoPathName;
 
@@ -77,12 +81,13 @@ public final class Autos
    */
   public static CommandBase exampleAuto(SwerveSubsystem swerve){
     String choosenAutoPathName = autoChooser.getSelected();
-    List<PathPlannerTrajectory> example1 = PathPlanner.loadPathGroup(choosenAutoPathName, new PathConstraints(4, 3));
+    List<PathPlannerTrajectory> example1 = PathPlanner.loadPathGroup(choosenAutoPathName, new PathConstraints(.5, .33));
       // This is just an example event map. It would be better to have a constant, global event map
       // in your code that will be used by all path following commands.
       HashMap<String, Command> eventMap = new HashMap<>();
       //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
       eventMap.put("ArmDown", new InstantCommand(() -> ArmRotateSubsystem.m_armPIDController.setReference(ArmConstants.posIntake, CANSparkMax.ControlType.kSmartMotion)));
+      //eventMap.put("IntakeFast", new InstantCommand(() -> ArmIntakeInCmd.intakeMotorL.set(Constants.ArmConstants.gIntakeSpeed)));
       eventMap.put("ArmUp", new InstantCommand(() -> ArmRotateSubsystem.m_armPIDController.setReference(ArmConstants.posDrive, CANSparkMax.ControlType.kSmartMotion)));
 
       // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want
